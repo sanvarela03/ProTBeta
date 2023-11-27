@@ -2,23 +2,25 @@ package com.example.springbootjwtauthentication.payload.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddAddressRequest {
+@Builder
+public class UpdateProductRequest {
     @NotBlank
-    private String country;
+    private Long id;
     @NotBlank
-    private String state;
+    private String name;
     @NotBlank
-    private String city;
+    private String description;
     @NotBlank
-    private String street;
+    private double price;
     @NotBlank
-    private String zip;
+    private int unitsAvailable;
     @NotBlank
-    private Boolean isCurrentAddress;
+    private boolean available;
 }

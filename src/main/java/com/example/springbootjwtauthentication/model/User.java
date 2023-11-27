@@ -11,10 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.*;
 
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -30,7 +28,10 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 18798L;
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -61,9 +62,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roleEntities = new HashSet<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Address> addressList;
 
     @ManyToOne
     @JoinColumn(name = "current_address_id")

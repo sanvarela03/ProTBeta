@@ -20,10 +20,6 @@ public class Producer extends User {
 
     private String fechaDeRegistro;
 
-    @OneToMany(
-            mappedBy = "owner",
-            cascade = CascadeType.ALL
-    )
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Product> products = new ArrayList<>();
-
 }

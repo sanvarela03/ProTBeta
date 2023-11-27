@@ -1,7 +1,10 @@
 package com.example.springbootjwtauthentication.controller;
 
+import com.example.springbootjwtauthentication.controller.service.implementations.ProductService;
+import com.example.springbootjwtauthentication.controller.service.implementations.UserService;
 import com.example.springbootjwtauthentication.payload.request.AddAddressRequest;
-import com.example.springbootjwtauthentication.security.jwt.JwtUtils;
+import com.example.springbootjwtauthentication.payload.request.AddProductRequest;
+import com.example.springbootjwtauthentication.payload.request.UpdateProductRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -17,19 +20,33 @@ import org.springframework.web.bind.annotation.*;
 public class ProducerController {
 
     @Autowired
-    private JwtUtils jwtUtils;
+    private UserService userService;
+    @Autowired
+    private ProductService productService;
 
-    @PutMapping("/add-address")
+    @PostMapping("/add-product")
     @PreAuthorize("hasRole('PRODUCER')")
-    public ResponseEntity<?> addAddress(
-            HttpServletRequest httpServletRequest,
-            @Valid @RequestBody AddAddressRequest request) {
-
-        log.info("S_HttpServeletRequest: {}", httpServletRequest);
-        log.info("S_Header: {}", httpServletRequest.getHeaderNames());
-        log.info("S_Boddy: {}", request);
-
-        return ResponseEntity.ok("Yow");
+    public ResponseEntity<?> addProduct(HttpServletRequest http, @Valid @RequestBody AddProductRequest request) {
+        log.info("Solicitud para agregar producto recibida");
+        return productService.addProduct(http, request);
     }
 
+    @PutMapping("/update-product")
+    @PreAuthorize("hasRole('PRODUCER')")
+    public ResponseEntity<?> updateProduct(HttpServletRequest http, @Valid @RequestBody UpdateProductRequest request) {
+        return productService.updateProduct(http, request);
+    }
+
+    @GetMapping("/products")
+    @PreAuthorize("hasRole('PRODUCER')")
+    public ResponseEntity<?> getProducts(HttpServletRequest http) {
+        return productService.getAllProducts(http);
+    }
+
+
+    @PostMapping("/add-address")
+    @PreAuthorize("hasRole('PRODUCER')")
+    public ResponseEntity<?> addAddress(HttpServletRequest http, @Valid @RequestBody AddAddressRequest request) {
+        return userService.addAddress(http, request);
+    }
 }

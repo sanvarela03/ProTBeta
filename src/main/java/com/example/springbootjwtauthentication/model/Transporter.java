@@ -23,5 +23,4 @@ public class Transporter extends User {
             cascade = CascadeType.ALL
     )
     private List<Vehicle> vehicles = new ArrayList<>();
-
 }

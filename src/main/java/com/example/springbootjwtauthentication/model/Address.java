@@ -1,9 +1,8 @@
 package com.example.springbootjwtauthentication.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -12,6 +11,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Address {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -22,7 +22,12 @@ public class Address {
     private String street;
     private String zip;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(
+            name = "user_id",
+            referencedColumnName = "id"
+    )
     private User user;
 }

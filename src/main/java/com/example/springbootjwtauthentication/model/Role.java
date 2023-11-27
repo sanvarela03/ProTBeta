@@ -1,6 +1,7 @@
 package com.example.springbootjwtauthentication.model;
 
 
+import com.example.springbootjwtauthentication.model.Enum.ERole;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

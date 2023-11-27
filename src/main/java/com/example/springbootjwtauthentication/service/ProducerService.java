@@ -8,7 +8,11 @@ public class ProducerService {
 
     private ProducerRepository repository;
 
-    public void saveProducer(){
+    public void saveProducer() {
+
+    }
+
+    public void addProduct() {
 
     }
 }

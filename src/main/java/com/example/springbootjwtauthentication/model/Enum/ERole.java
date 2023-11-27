@@ -1,4 +1,4 @@
-package com.example.springbootjwtauthentication.model;
+package com.example.springbootjwtauthentication.model.Enum;
 
 public enum ERole {
     ROLE_USER,

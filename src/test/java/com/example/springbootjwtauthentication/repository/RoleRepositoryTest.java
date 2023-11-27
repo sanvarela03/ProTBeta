@@ -1,6 +1,6 @@
 package com.example.springbootjwtauthentication.repository;
 
-import com.example.springbootjwtauthentication.model.ERole;
+import com.example.springbootjwtauthentication.model.Enum.ERole;
 import com.example.springbootjwtauthentication.model.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

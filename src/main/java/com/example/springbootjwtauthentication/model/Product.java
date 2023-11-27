@@ -1,10 +1,12 @@
 package com.example.springbootjwtauthentication.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -19,14 +21,27 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class Product {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(
-            name = "product_id"
-    )
     private Long id;
+
+    private String name;
+
+    private int unitsAvailable;
+
+    private String description;
+
+    private double price;
+
+    private boolean isAvailable;
 
     @ManyToOne
     @JoinColumn(
             name = "producer_id"
     )
+    @ToString.Exclude
+    @JsonIgnore
     private Producer owner;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    @JsonIgnore
+    private List<ProductImage> images;
 }

@@ -1,12 +1,14 @@
 package com.example.springbootjwtauthentication.controller.service.implementations;
 
 import com.example.springbootjwtauthentication.controller.service.interfaces.SignUp;
-import com.example.springbootjwtauthentication.model.ERole;
+import com.example.springbootjwtauthentication.model.Customer;
+import com.example.springbootjwtauthentication.model.Enum.ERole;
 import com.example.springbootjwtauthentication.model.Producer;
 import com.example.springbootjwtauthentication.model.Role;
 import com.example.springbootjwtauthentication.model.User;
 import com.example.springbootjwtauthentication.payload.request.SignupRequest;
 import com.example.springbootjwtauthentication.payload.response.MessageResponse;
+import com.example.springbootjwtauthentication.repository.CustomerRepository;
 import com.example.springbootjwtauthentication.repository.ProducerRepository;
 import com.example.springbootjwtauthentication.repository.RoleRepository;
 import com.example.springbootjwtauthentication.repository.UserRepository;
@@ -23,16 +25,19 @@ import java.util.Set;
 public class SignUpJwt implements SignUp {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    PasswordEncoder encoder;
+    private PasswordEncoder encoder;
 
     @Autowired
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
-    ProducerRepository producerRepository;
+    private ProducerRepository producerRepository;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Override
     public ResponseEntity<MessageResponse> doSignUp(SignupRequest request) {
@@ -46,9 +51,12 @@ public class SignUpJwt implements SignUp {
         User user = createNewUserAccount(request);
         user.setRoleEntities(getRoles(request));
 
+
         if (request.getRole().contains("prod")) {
             producerRepository.save(createProducerFromUser(user));
 
+        } else if (request.getRole().contains("cust")) {
+            customerRepository.save(createCustomerFromUser(user));
         } else {
             userRepository.save(user);
         }
@@ -83,6 +91,14 @@ public class SignUpJwt implements SignUp {
                         Role prodRole = roleRepository.findByName(ERole.ROLE_PRODUCER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roleEntities.add(prodRole);
+
+                        break;
+                    case "cust":
+                        Role customerRole = roleRepository.findByName(ERole.ROLE_CUSTOMER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roleEntities.add(customerRole);
+
+                        break;
                     default:
                         Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -109,6 +125,17 @@ public class SignUpJwt implements SignUp {
                 .lastName(user.getLastName())
                 .username(user.getUsername())
                 .fechaDeRegistro((new Date()).toString())//TODO : Complementar
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .roleEntities(user.getRoleEntities())
+                .build();
+    }
+
+    private Customer createCustomerFromUser(User user) {
+        return Customer.builder()
+                .name(user.getName())
+                .lastName(user.getLastName())
+                .username(user.getUsername())
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .roleEntities(user.getRoleEntities())

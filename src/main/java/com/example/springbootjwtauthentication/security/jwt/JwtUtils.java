@@ -3,16 +3,20 @@ package com.example.springbootjwtauthentication.security.jwt;
 
 import com.example.springbootjwtauthentication.security.service.UserDetailsImpl;
 import io.jsonwebtoken.*;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 
 import static io.jsonwebtoken.SignatureAlgorithm.*;
 
 @Component
+@Slf4j
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
@@ -36,6 +40,14 @@ public class JwtUtils {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
+    public String getUserNameFromJwtToken(HttpServletRequest http) {
+        return getUserNameFromJwtToken(parseJwt(http));
+    }
+
+    public boolean validateJwtToken(HttpServletRequest request) {
+        return validateJwtToken(parseJwt(request));
+    }
+
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
@@ -53,5 +65,15 @@ public class JwtUtils {
         }
 
         return false;
+    }
+
+    public String parseJwt(HttpServletRequest request) {
+        String headerAuth = request.getHeader("Authorization");
+
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
+            return headerAuth.substring(7);
+        }
+
+        return null;
     }
 }

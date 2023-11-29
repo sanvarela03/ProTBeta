@@ -48,6 +48,10 @@ public class Order implements Serializable {
 
     private Date estimatedDeliveryDate;
 
+    private double orderCost;
+
+    private double shippingCost;
+
     public Order(Customer customer, Producer producer) {
         this.customer = customer;
         this.producer = producer;

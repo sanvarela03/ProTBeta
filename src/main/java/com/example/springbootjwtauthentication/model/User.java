@@ -55,7 +55,9 @@ public class User implements Serializable {
     private String verificationCode;
     private Date verificationCodeTimestamp;
 
-    @ManyToMany(fetch = LAZY)
+    private String firebaseToken;
+
+    @ManyToMany(fetch = EAGER)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

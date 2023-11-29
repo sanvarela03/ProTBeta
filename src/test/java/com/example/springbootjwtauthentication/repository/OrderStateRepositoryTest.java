@@ -19,23 +19,23 @@ import static org.junit.jupiter.api.Assertions.*;
 class OrderStateRepositoryTest {
 
     @Autowired
-    private OrderRepository orderRepository;
+    protected OrderRepository orderRepository;
     @Autowired
-    private OrderStateRepository orderStateRepository;
+    protected OrderStateRepository orderStateRepository;
     @Autowired
-    private ProducerRepository producerRepository;
+    protected ProducerRepository producerRepository;
     @Autowired
-    private CustomerRepository customerRepository;
+    protected CustomerRepository customerRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    protected PasswordEncoder passwordEncoder;
     @Autowired
-    private RoleRepository roleRepository;
+    protected RoleRepository roleRepository;
     @Autowired
-    private StateRepository stateRepository;
+    protected StateRepository stateRepository;
 
 
-    private Producer producer;
-    private Customer customer;
+    protected Producer producer;
+    protected Customer customer;
 
     @BeforeEach
     void setUp() {

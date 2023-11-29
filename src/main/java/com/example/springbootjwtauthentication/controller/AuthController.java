@@ -1,9 +1,9 @@
 package com.example.springbootjwtauthentication.controller;
 
-import com.example.springbootjwtauthentication.controller.service.implementations.PasswordForgotJwt;
-import com.example.springbootjwtauthentication.controller.service.interfaces.*;
+import com.example.springbootjwtauthentication.service.api.auth.PasswordForgotJwt;
 import com.example.springbootjwtauthentication.payload.request.*;
 import com.example.springbootjwtauthentication.payload.response.MessageResponse;
+import com.example.springbootjwtauthentication.service.interfaces.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,22 +16,22 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    SignUp signUp;
+    private SignUp signUp;
 
     @Autowired
-    SignIn signIn;
+    private SignIn signIn;
 
     @Autowired
-    IRefreshToken refreshToken;
+    private IRefreshToken refreshToken;
 
     @Autowired
-    SignOut signOut;
+    private SignOut signOut;
 
     @Autowired
-    ResetPassword resetPassword;
+    private ResetPassword resetPassword;
 
     @Autowired
-    PasswordForgotJwt passwordForgotJwt;
+    private PasswordForgotJwt passwordForgotJwt;
 
     /**
      * http://localhost:8095/api/auth/signup
@@ -71,36 +71,28 @@ public class AuthController {
      */
     @PutMapping("/resetpassword")
     public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPassRequest request) {
-
-//        logger.info("request: {}", request.toString());
-//
-//        User userTest = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
-//        logger.info("password: {}", userTest.getPassword());
-//        logger.info("requestOldPasswordEncoded: {}", encoder.encode(request.getOldPassword()));
-//
-//        if (userRepository.existsByUsernameAndPassword(request.getUsername(), request.getOldPassword())) {
-//            return ResponseEntity.badRequest().body(new MessageResponse("S_Error: Username and Old password not found for refresh !!"));
-//        }
-//
-//        User user = userRepository.findByUsernameAndPassword(request.getUsername(), encoder.encode(request.getOldPassword())).orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + request.getUsername() + " And Password: " + request.getOldPassword()));
-//
-//        logger.info("user: {}", user);
-//
-//        return ResponseEntity.ok(new MessageResponse("Usuario y contrasenia encontrados"));
-
         return resetPassword.doReset(request);
     }
 
+    /**
+     * http://localhost:8095/api/auth/send-code
+     */
     @PostMapping("/send-code")
     public ResponseEntity<MessageResponse> sendVerificationCodeByEmail(@Valid @RequestBody ForgotPasswordRequest request) {
         return passwordForgotJwt.sendVerificationCode(request.getEmail());
     }
 
+    /**
+     * http://localhost:8095/api/auth/verify-code
+     */
     @PostMapping("/verify-code")
     public ResponseEntity<?> verifyCode(@Valid @RequestBody VerificationCodeRequest request) {
         return passwordForgotJwt.isVerificationCodeValid(request.getEmail(), request.getVerificationCode());
     }
 
+    /**
+     * http://localhost:8095/api/auth/forgot-password
+     */
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@Valid @RequestBody ResetPassVerifiedCodeRequest request) {
         return passwordForgotJwt.resetPassword(request.getEmail(), request.getVerificationCode(), request.getNewPassword());

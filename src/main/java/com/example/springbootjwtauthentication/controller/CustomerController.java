@@ -1,9 +1,7 @@
 package com.example.springbootjwtauthentication.controller;
 
-import com.example.springbootjwtauthentication.payload.request.AddProductRequest;
-import com.example.springbootjwtauthentication.payload.request.OrderProductRequest;
 import com.example.springbootjwtauthentication.payload.request.OrderRequest;
-import com.example.springbootjwtauthentication.service.OrderService;
+import com.example.springbootjwtauthentication.service.api.OrderServiceApi;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -19,12 +17,12 @@ import org.springframework.web.bind.annotation.*;
 public class CustomerController {
 
     @Autowired
-    private OrderService orderService;
+    private OrderServiceApi orderServiceApi;
 
     @PostMapping("/add-order")
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<?> addOrder(HttpServletRequest http, @Valid @RequestBody OrderRequest request) {
         log.info("Solicitud para agregar orden recibida");
-        return orderService.addNewOrder(http, request);
+        return orderServiceApi.addNewOrder(http, request);
     }
 }

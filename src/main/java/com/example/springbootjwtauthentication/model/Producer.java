@@ -17,9 +17,5 @@ import java.util.List;
 @Setter
 @SuperBuilder
 public class Producer extends User {
-
     private String fechaDeRegistro;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
-    private List<Product> products = new ArrayList<>();
 }

@@ -1,15 +1,12 @@
 package com.example.springbootjwtauthentication.controller;
 
-import com.example.springbootjwtauthentication.controller.service.implementations.ImageService;
-import com.example.springbootjwtauthentication.model.Producer;
-import com.example.springbootjwtauthentication.model.User;
+import com.example.springbootjwtauthentication.service.implementations.ImageService;
 import com.example.springbootjwtauthentication.repository.ProducerRepository;
 import com.example.springbootjwtauthentication.security.jwt.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

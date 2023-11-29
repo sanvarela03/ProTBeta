@@ -40,3 +40,7 @@ santi:
 
 upload:
   path: C:/Users/Santiago Varela/Pictures/spring_boot_img/
+
+gcp:
+  firebase:
+    service-account: classpath:firebase/firebase-service-account.json

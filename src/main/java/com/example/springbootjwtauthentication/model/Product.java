@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -18,7 +17,10 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Product {
+public class Product implements Serializable {
+
+    private static final long serialVersionUID = 1879238L;
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -38,10 +40,19 @@ public class Product {
             name = "producer_id"
     )
     @ToString.Exclude
-    @JsonIgnore
-    private Producer owner;
+    private Producer producer;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     @JsonIgnore
+    @ToString.Exclude
     private List<ProductImage> images;
+
+    public Product(String name, int unitsAvailable, String description, double price, boolean isAvailable, Producer producer) {
+        this.name = name;
+        this.unitsAvailable = unitsAvailable;
+        this.description = description;
+        this.price = price;
+        this.isAvailable = isAvailable;
+        this.producer = producer;
+    }
 }

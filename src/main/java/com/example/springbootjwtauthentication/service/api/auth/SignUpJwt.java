@@ -15,6 +15,7 @@ import com.example.springbootjwtauthentication.repository.RoleRepository;
 import com.example.springbootjwtauthentication.repository.UserRepository;
 import com.example.springbootjwtauthentication.service.serializer.CustomerSerializerService;
 import com.example.springbootjwtauthentication.service.serializer.ProducerSerializerService;
+import com.example.springbootjwtauthentication.service.serializer.TransporterSerializerService;
 import com.example.springbootjwtauthentication.service.serializer.UserSerializerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,11 +35,16 @@ public class SignUpJwt implements SignUp {
     @Autowired
     private CustomerService customerService;
     @Autowired
+    private TransporterService transporterService;
+
+    @Autowired
     private UserSerializerService userSerializerService;
     @Autowired
     private ProducerSerializerService producerSerializerService;
     @Autowired
     private CustomerSerializerService customerSerializerService;
+    @Autowired
+    private TransporterSerializerService transporterSerializerService;
 
     @Override
     public ResponseEntity<MessageResponse> doSignUp(SignupRequest request) {
@@ -57,6 +63,8 @@ public class SignUpJwt implements SignUp {
             producerService.saveProducer(producerSerializerService.getProducerFromUser(user));
         } else if (request.getRole().contains("cust")) {
             customerService.saveCustomer(customerSerializerService.getCustomerFromUser(user));
+        } else if (request.getRole().contains("tr")) {
+            transporterService.saveTransporter(transporterSerializerService.getTransporterFromUser(user));
         } else {
             userService.saveUser(user);
         }

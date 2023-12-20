@@ -36,6 +36,63 @@ public class RandomTests {
 
 
     }
+
+
+    @Test
+    void diomondTest() {
+        int L = 9 - 1;
+        int m = 0;
+
+        int li = 0;
+        int ls = 0;
+
+        boolean p = false;
+
+        for (int i = 0; i <= L; i++) {
+
+            if (i <= L/2) {
+                m = 2 * i + 1;
+            } else {
+                m = m - 2;
+            }
+
+            li = (int) Math.floor(((double) (L - m) / 2 + 1));
+            ls = (int) Math.ceil((double) (L + m) / 2 - 1);
+
+            for (int j = 0; j <= L; j++) {
+                p = j >= li && j <= ls;
+                if (p) {
+                    System.out.print("*");
+                } else {
+                    System.out.print(" ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    @Test
+    void sTest() {
+        for (int n = 0; n < 9; n++) {
+            int resultado = calcularTermino(n);
+            System.out.println("a[" + n + "] = " + resultado);
+        }
+    }
+
+    public static int calcularTermino(int n) {
+        // Aplicar la fórmula a_n = (-1)^ceil(n/3)
+        return (int) Math.pow(-1, Math.ceil((double) n / 3));
+    }
+
+    private int p(int b, int e) {
+        int r = 1;
+        for (int i = 1; i <= e; i++) {
+            r = r * b;
+        }
+        return r;
+    }
+
+
 }
 
 class Fecha {

@@ -61,6 +61,10 @@ public class UserSerializerService {
                         roleEntities.add(customerRole);
 
                         break;
+                    case "tr":
+                        Role transporterRole = roleService.getRoleByName(ERole.ROLE_TRANSPORTER);
+                        roleEntities.add(transporterRole);
+                        break;
                     default:
                         Role userRole = roleService.getRoleByName(ERole.ROLE_USER);
                         roleEntities.add(userRole);

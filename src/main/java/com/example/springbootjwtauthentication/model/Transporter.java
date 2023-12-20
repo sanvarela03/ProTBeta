@@ -18,6 +18,9 @@ import java.util.List;
 @Setter
 @SuperBuilder
 public class Transporter extends User {
+
+    private String fechaDeRegistro;
+
     @OneToMany(
             mappedBy = "owner",
             cascade = CascadeType.ALL

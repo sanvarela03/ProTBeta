@@ -33,11 +33,16 @@ public class OrderState implements Serializable {
     @MapsId("stateId")
     private State state;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        createdAt = new Date();
+    }
 
     public OrderState(Order order, State state) {
         this.order = order;
         this.state = state;
-        createdAt = new Date();
     }
 }

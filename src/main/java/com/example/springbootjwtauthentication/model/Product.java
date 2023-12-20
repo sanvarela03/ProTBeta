@@ -1,6 +1,6 @@
 package com.example.springbootjwtauthentication.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,6 +40,9 @@ public class Product implements Serializable {
             name = "producer_id"
     )
     @ToString.Exclude
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("producerId")
     private Producer producer;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")

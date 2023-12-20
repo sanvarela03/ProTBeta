@@ -1,7 +1,10 @@
 package com.example.springbootjwtauthentication.controller;
 
+import com.example.springbootjwtauthentication.payload.request.ProducerAnswerRequest;
 import com.example.springbootjwtauthentication.service.api.AddressServiceApi;
 import com.example.springbootjwtauthentication.payload.request.AddAddressRequest;
+import com.example.springbootjwtauthentication.service.api.ProducerServiceApi;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -16,11 +19,11 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class ProducerController {
     @Autowired
-    private AddressServiceApi addressServiceApi;
+    private ProducerServiceApi producerServiceApi;
 
-    @PostMapping("/add-address")
+    @PostMapping("/accept-order")
     @PreAuthorize("hasRole('PRODUCER')")
-    public ResponseEntity<?> addAddress(HttpServletRequest http, @Valid @RequestBody AddAddressRequest request) {
-        return addressServiceApi.addAddress(http, request);
+    public ResponseEntity<?> acceptOrder(HttpServletRequest http, @RequestBody ProducerAnswerRequest request) throws FirebaseMessagingException {
+        return producerServiceApi.acceptOrder(http, request);
     }
 }

@@ -17,4 +17,14 @@ public class OrderService {
     public Order createOrder(Customer customer, Producer producer) {
         return repository.save(new Order(customer, producer));
     }
+
+    public Order saveOrder(Order order) {
+        return repository.save(order);
+    }
+
+    public Order getOrderById(Long id) {
+        return repository.findById(id).orElseThrow(
+                () -> new RuntimeException("No se encontró el pedido con ID: " + id)
+        );
+    }
 }

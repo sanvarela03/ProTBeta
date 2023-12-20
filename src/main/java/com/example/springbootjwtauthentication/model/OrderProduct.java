@@ -1,11 +1,12 @@
 package com.example.springbootjwtauthentication.model;
 
 import com.example.springbootjwtauthentication.model.PK.OrderProductPK;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -21,10 +22,17 @@ public class OrderProduct implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("orderId")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("orderId")
+    @ToString.Exclude
     private Order order;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("productId")
+    @ToString.Exclude
     private Product product;
+
     private int units;
 
     public OrderProduct(Order order, Product product, int units) {

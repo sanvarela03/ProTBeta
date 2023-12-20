@@ -14,4 +14,8 @@ public class AddressService {
     public Address saveAddress(Address address) {
         return repository.save(address);
     }
+
+    public Address getAddressById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("No se pudo encontrar la dirección con ID: " + id));
+    }
 }

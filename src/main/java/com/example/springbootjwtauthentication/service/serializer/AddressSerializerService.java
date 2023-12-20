@@ -15,6 +15,8 @@ public class AddressSerializerService {
                 .city(request.getCity())
                 .street(request.getStreet())
                 .zip(request.getZip())
+                .longitude(request.getLongitude())
+                .latitude(request.getLatitude())
                 .build();
     }
 }

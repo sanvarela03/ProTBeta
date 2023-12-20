@@ -1,16 +1,15 @@
 package com.example.springbootjwtauthentication.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
@@ -28,9 +27,11 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
+@EqualsAndHashCode(exclude = "currentAddress")
 public class User implements Serializable {
 
-    private static final long serialVersionUID = 18798L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -63,9 +64,10 @@ public class User implements Serializable {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @JsonIgnore
     private Set<Role> roleEntities = new HashSet<>();
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "current_address_id")
     private Address currentAddress;
 

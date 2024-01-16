@@ -6,22 +6,21 @@ import lombok.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "states", uniqueConstraints = {@UniqueConstraint(columnNames = "initials")})
+@Table(name = "addresses")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class State {
+public class City {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String name;
-    private String initials;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(
-            name = "country_id",
+            name = "state_id",
             referencedColumnName = "id"
     )
-    private Country country;
+    private State state;
 }

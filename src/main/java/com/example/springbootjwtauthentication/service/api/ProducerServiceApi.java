@@ -1,7 +1,6 @@
 package com.example.springbootjwtauthentication.service.api;
 
 import com.example.springbootjwtauthentication.model.Customer;
-import com.example.springbootjwtauthentication.model.Enum.EState;
 import com.example.springbootjwtauthentication.model.Order;
 import com.example.springbootjwtauthentication.model.Producer;
 import com.example.springbootjwtauthentication.model.Transporter;
@@ -28,11 +27,9 @@ public class ProducerServiceApi {
     @Autowired
     private OrderService orderService;
     @Autowired
-    private OrderStateService orderStateService;
-    @Autowired
     private FirebaseMessaging firebaseMessaging;
     @Autowired
-    private StateService stateService;
+    private OrderStatusManagerService orderStatusManagerService;
     @Autowired
     private AutowireCapableBeanFactory beanFactory;
     @Autowired
@@ -63,7 +60,7 @@ public class ProducerServiceApi {
      */
     private void handleAccepted(Order order) throws FirebaseMessagingException {
         Customer customer = order.getCustomer();
-        orderStateService.createOrderState(order, stateService.getSateByName(EState.ACCEPTED));
+        orderStatusManagerService.accepted(order);
         sendFirebaseNotificaction(customer, order);
 
         TransporterAssignmentService transporterAssignmentServiceService = beanFactory.createBean(TransporterAssignmentService.class);
@@ -73,6 +70,8 @@ public class ProducerServiceApi {
 
     /**
      * Sep esta funcion necesita ser mejorada
+     *
+     * Buscar transportador en función de su ubicación (distancia mas cercana al pedido)
      * */
     private List<Transporter> findTransporters() {
         return transporterService.getAllTransporters();

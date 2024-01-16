@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.ExecutionException;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/customer")
@@ -22,7 +24,7 @@ public class CustomerController {
 
     @PostMapping("/add-order")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<?> addOrder(HttpServletRequest http, @Valid @RequestBody OrderRequest request) throws FirebaseMessagingException {
+    public ResponseEntity<?> addOrder(HttpServletRequest http, @Valid @RequestBody OrderRequest request) throws FirebaseMessagingException, InterruptedException, ExecutionException {
         log.info("Solicitud para agregar orden recibida");
         return orderServiceApi.addNewOrder(http, request);
     }

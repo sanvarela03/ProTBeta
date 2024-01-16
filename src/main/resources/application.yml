@@ -44,3 +44,13 @@ upload:
 gcp:
   firebase:
     service-account: classpath:firebase/firebase-service-account.json
+
+google:
+  maps:
+    apikey: AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg
+
+bing:
+  maps:
+    apikey: AltqUH2HBpugYCVAkuvz-jM6YAdBdiTmDBr0mcLx9QTU6Bt6TozzweZT7oBQMC2I
+
+

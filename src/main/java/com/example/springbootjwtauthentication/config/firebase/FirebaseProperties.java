@@ -1,4 +1,4 @@
-package com.example.springbootjwtauthentication.config;
+package com.example.springbootjwtauthentication.config.firebase;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -1,6 +1,7 @@
-package com.example.springbootjwtauthentication.config;
+package com.example.springbootjwtauthentication.config.firebase;
 
 
+import com.example.springbootjwtauthentication.config.firebase.FirebaseProperties;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -22,7 +23,7 @@ public class FirebaseConfiguration {
     }
 
     @Bean
-    GoogleCredentials googleCredentials() {
+    public GoogleCredentials googleCredentials() {
         try {
             if (firebaseProperties.getServiceAccount() != null) {
                 try (InputStream is = firebaseProperties.getServiceAccount().getInputStream()) {
@@ -38,7 +39,7 @@ public class FirebaseConfiguration {
     }
 
     @Bean
-    FirebaseApp firebaseApp(GoogleCredentials credentials) {
+    public FirebaseApp firebaseApp(GoogleCredentials credentials) {
         FirebaseOptions options = FirebaseOptions.builder()
                 .setCredentials(credentials)
                 .build();
@@ -47,7 +48,7 @@ public class FirebaseConfiguration {
     }
 
     @Bean
-    FirebaseMessaging firebaseMessaging(FirebaseApp firebaseApp) {
+    public FirebaseMessaging firebaseMessaging(FirebaseApp firebaseApp) {
         return FirebaseMessaging.getInstance(firebaseApp);
     }
 }

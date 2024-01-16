@@ -20,6 +20,8 @@ public class UpdateProductRequest {
     @NotBlank
     private double price;
     @NotBlank
+    private double weightPerUnit;
+    @NotBlank
     private int unitsAvailable;
     @NotBlank
     private boolean available;

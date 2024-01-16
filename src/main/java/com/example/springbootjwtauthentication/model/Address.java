@@ -16,19 +16,19 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @Builder
 public class Address implements Serializable {
-
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+    private String name;
     private String country;
     private String state;
     private String city;
     private String street;
     private String zip;
-    private String longitude;
-    private String latitude;
+    private double longitude;
+    private double latitude;
 
     @ManyToOne(
             cascade = CascadeType.ALL

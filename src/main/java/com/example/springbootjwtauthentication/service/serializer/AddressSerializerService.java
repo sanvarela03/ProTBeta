@@ -9,14 +9,15 @@ import org.springframework.stereotype.Service;
 public class AddressSerializerService {
     public Address getAddress(AddAddressRequest request, User user) {
         return Address.builder()
+                .name(request.getName().trim().toUpperCase())
                 .user(user)
                 .country(request.getCountry())
                 .state(request.getState())
                 .city(request.getCity())
                 .street(request.getStreet())
                 .zip(request.getZip())
-                .longitude(request.getLongitude())
-                .latitude(request.getLatitude())
+                .latitude(Double.parseDouble(request.getLatitude()))
+                .longitude(Double.parseDouble(request.getLongitude()))
                 .build();
     }
 }

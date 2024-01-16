@@ -63,7 +63,20 @@ public class Order implements Serializable {
 
     private double orderCost;
 
+    private double orderWeight;
+
+    private double estimatedTravelDistance;
+
+    private double estimatedTravelDuration;
+
     private double shippingCost;
+
+
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    private PaymentMethod paymentMethod;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date maxDeliveryDate;
@@ -79,6 +92,11 @@ public class Order implements Serializable {
     @JoinColumn(name = "delivery_address_id")
     private Address deliveryAddress;
 
+    public Order(Customer customer, Producer producer) {
+        this.customer = customer;
+        this.producer = producer;
+    }
+
     @PrePersist
     public void prePersist() {
         // Calcular la fecha máxima de entrega (fecha actual + 7 días)
@@ -88,9 +106,11 @@ public class Order implements Serializable {
         maxDeliveryDate = calendar.getTime();
     }
 
-    public Order(Customer customer, Producer producer) {
+    public Order(Customer customer, Producer producer, Address from, Address to) {
         this.customer = customer;
         this.producer = producer;
+        this.pickupAddress = from;
+        this.deliveryAddress = to;
     }
 
     public void setEstimatedDeliveryDateFromString(String dateString) throws ParseException {

@@ -1,12 +1,13 @@
 package com.example.springbootjwtauthentication.model.Enum;
 
-public enum EState {
+public enum EStatus {
     CREATED,
     ACCEPTED,
     TRANSPORTER_ASSIGNED,
-    PACKAGING,
-    PROCESSING_PAYMENT,
+    ON_WAY_TO_PICKUP,
     SHIPPED,
+    ON_WAY_TO_DELIVERY,
+    PROCESSING_PAYMENT,
     DELIVERED,
     CANCELED
 }

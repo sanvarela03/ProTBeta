@@ -2,7 +2,7 @@ package com.example.springbootjwtauthentication.repository;
 
 import com.example.springbootjwtauthentication.model.*;
 import com.example.springbootjwtauthentication.model.Enum.ERole;
-import com.example.springbootjwtauthentication.model.Enum.EState;
+import com.example.springbootjwtauthentication.model.Enum.EStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,18 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
-class OrderStateRepositoryTest {
+class OrderStatusRepositoryTest {
 
     @Autowired
     protected OrderRepository orderRepository;
     @Autowired
-    protected OrderStateRepository orderStateRepository;
+    protected OrderStatusRepository orderStatusRepository;
     @Autowired
     protected ProducerRepository producerRepository;
     @Autowired
@@ -31,7 +28,7 @@ class OrderStateRepositoryTest {
     @Autowired
     protected RoleRepository roleRepository;
     @Autowired
-    protected StateRepository stateRepository;
+    protected StatusRepository statusRepository;
 
 
     protected Producer producer;
@@ -78,14 +75,14 @@ class OrderStateRepositoryTest {
         orderRepository.save(order);
         System.out.printf("Order : < %s > %n", order);
 
-        State state =
-                stateRepository
-                        .findByName(EState.CREATED)
-                        .orElseThrow(() -> new RuntimeException("Estado no encontrado: " + EState.CREATED));
+        Status state =
+                statusRepository
+                        .findByName(EStatus.CREATED)
+                        .orElseThrow(() -> new RuntimeException("Estado no encontrado: " + EStatus.CREATED));
         System.out.printf("State : < %s > %n", state);
-        OrderState orderState = new OrderState(order, state);
-        System.out.printf("Before_OrderState : < %s > %n", orderState);
-        orderStateRepository.save(orderState);
-        System.out.printf("After_OrderState : < %s > %n", orderState);
+        OrderStatus orderStatus = new OrderStatus(order, state);
+        System.out.printf("Before_OrderState : < %s > %n", orderStatus);
+        orderStatusRepository.save(orderStatus);
+        System.out.printf("After_OrderState : < %s > %n", orderStatus);
     }
 }

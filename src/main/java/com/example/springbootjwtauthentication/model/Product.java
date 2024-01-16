@@ -24,15 +24,11 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-
     private String name;
-
-    private int unitsAvailable;
-
     private String description;
-
+    private double weightPerUnit;
     private double price;
-
+    private int unitsAvailable;
     private boolean isAvailable;
 
     @ManyToOne

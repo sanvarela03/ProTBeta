@@ -1,6 +1,5 @@
 package com.example.springbootjwtauthentication.service.implementations;
 
-import com.example.springbootjwtauthentication.model.Enum.EState;
 import com.example.springbootjwtauthentication.model.Order;
 import com.example.springbootjwtauthentication.model.Transporter;
 import com.example.springbootjwtauthentication.payload.request.TransporterAnswerRequest;
@@ -32,14 +31,11 @@ import java.util.TimerTask;
 public class TransporterAssignmentService implements TransporterAnswerListener {
 
     @Autowired
-    private FirebaseMessaging firebaseMessaging;
+    private NotificationService notificationService;
     @Autowired
     private OrderService orderService;
     @Autowired
-    private OrderStateService orderStateService; // TODO: Tal vez necesite poner estos dos en un solo servicio que cambien el estado de un pedido
-    @Autowired
-    private StateService stateService;
-
+    private OrderStatusManagerService orderStatusManagerService;
     private List<Transporter> candidateTransportersList;
     private Transporter lastTransporterNotified;
     private Order order;
@@ -120,7 +116,7 @@ public class TransporterAssignmentService implements TransporterAnswerListener {
         order.setEstimatedDeliveryDateFromString(data.getEstimatedDeliveryDate());
         order.setEstimatedPickupDateFromString(data.getEstimatedPickupDate());
         orderService.saveOrder(order);
-        orderStateService.createOrderState(order, stateService.getSateByName(EState.TRANSPORTER_ASSIGNED));
+        orderStatusManagerService.transporterAssigned(order);
         manager.unsubscribe(this, order);
         endTimer();
     }
@@ -147,7 +143,9 @@ public class TransporterAssignmentService implements TransporterAnswerListener {
     private void notifyNextTransporter() throws FirebaseMessagingException {
         if (!candidateTransportersList.isEmpty()) {
             Transporter nextTransporter = candidateTransportersList.get(0);
-            sendFirebaseNotification(order, nextTransporter);
+
+            notificationService.notifyTransporter(order, nextTransporter);
+
             lastTransporterNotified = nextTransporter;
             ignored = true;
             startTimer();
@@ -169,33 +167,6 @@ public class TransporterAssignmentService implements TransporterAnswerListener {
             timer.purge();
         }
     }
-
-    //TODO Es probable que esta responsablidad deba ser delegada a una clase diferente
-    private void sendFirebaseNotification(Order order, Transporter nextTransporter) throws FirebaseMessagingException {
-
-        log.info("SIMULACIÓN DE NOTIFICACIÓN CON FIREBASE ...");
-
-//        Notification notification = Notification.builder()
-//                .setTitle("Solicitud de  transporte de pedido")
-//                .setBody(order.getCustomer().getName() + " ha realizado un pedido")
-//                .build();
-//
-//        Message msg = Message.builder()
-//                .setToken(nextTransporter.getFirebaseToken())
-//                .setNotification(notification)
-//                .setAndroidConfig(AndroidConfig.builder()
-//                        .setNotification(AndroidNotification.builder()
-//                                .setSound("default")
-//                                .setClickAction("YOUR_CLICK_ACTION")
-//                                .setDefaultLightSettings(true)
-//                                .setColor("#fca103")
-//                                .setBodyLocalizationKey("")
-//                                .build())
-//                        .build())
-//                .build();
-//        firebaseMessaging.send(msg);
-    }
-
     private Timer timer;
 
     private class DeadlineTask extends TimerTask {
@@ -203,7 +174,7 @@ public class TransporterAssignmentService implements TransporterAnswerListener {
         public void run() {
             try {
                 onDeadlineCompleted();
-            } catch (FirebaseMessagingException e) { //TODO : No creo que se capture ésta excepción acá
+            } catch (Exception e) { //TODO : No creo que se capture ésta excepción acá
                 e.printStackTrace(); // Maneja la excepción de manera adecuada
             }
         }
@@ -211,8 +182,8 @@ public class TransporterAssignmentService implements TransporterAnswerListener {
 }
 /*
  * TODO:
- *  2 Necesito decidir en dónde se invocará al método startJob
- *  1 Necesito probar esta funcionalidad si o si
- *  3 Una vez decidido en dónde se invocará al método necesito decidir cómo se deben crear los objetos
+ *  2 Necesito decidir en dónde se invocará al método startJob rta -> cuando el productor acepta del pedido
+ *  1 Necesito probar esta funcionalidad si o si-> PRUEBAS UNITARIAS
+ *  3 Una vez decidido en dónde se invocará al método necesito decidir cómo se deben crear los objetos ->
  *  4 Posiblemente el gestor de asignación deba ser un singleton
  * */

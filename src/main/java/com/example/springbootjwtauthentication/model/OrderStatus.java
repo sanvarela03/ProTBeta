@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderState implements Serializable {
+public class OrderStatus implements Serializable {
     private static final long serialVersionUID = 321321123121L;
 
     @EmbeddedId
@@ -30,8 +30,8 @@ public class OrderState implements Serializable {
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    @MapsId("stateId")
-    private State state;
+    @MapsId("statusId")
+    private Status status;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
@@ -41,8 +41,8 @@ public class OrderState implements Serializable {
         createdAt = new Date();
     }
 
-    public OrderState(Order order, State state) {
+    public OrderStatus(Order order, Status status) {
         this.order = order;
-        this.state = state;
+        this.status = status;
     }
 }

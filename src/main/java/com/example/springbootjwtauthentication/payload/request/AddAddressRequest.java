@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddAddressRequest {
+
+    private String name;
     @NotBlank
     private String country;
     @NotBlank
@@ -22,6 +24,8 @@ public class AddAddressRequest {
     private String zip;
     @NotBlank
     private Boolean isCurrentAddress;
-    private String longitude;
+    @NotBlank
     private String latitude;
+    @NotBlank
+    private String longitude;
 }

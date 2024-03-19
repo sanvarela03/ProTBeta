@@ -15,4 +15,8 @@ public class JWTService {
         return jwtUtils.getUserNameFromJwtToken(http);
     }
 
+    public Long extractUserId(HttpServletRequest http) {
+        return Long.parseLong(jwtUtils.getUserIdFromJwtToken(http));
+    }
+
 }

@@ -27,7 +27,7 @@ public class RefreshTokenJwt implements IRefreshToken {
                 .map(refreshTokenService::verifyExpiration)
                 .map(com.example.springbootjwtauthentication.model.RefreshToken::getUser)
                 .map(user -> {
-                    String token = jwtUtils.generateTokenFromUsername(user.getUsername());
+                    String token = jwtUtils.generateTokenFromUsername(user.getUsername(), user.getId());
                     return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
                 })
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,

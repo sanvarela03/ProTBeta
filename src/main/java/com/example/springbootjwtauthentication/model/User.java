@@ -48,14 +48,16 @@ public class User implements Serializable {
 
     @NotBlank
     @Size(max = 120)
+    @JsonIgnore
     private String password;
 
     private String name;
     private String lastName;
-
+    @JsonIgnore
     private String verificationCode;
+    @JsonIgnore
     private Date verificationCodeTimestamp;
-
+    @JsonIgnore
     private String firebaseToken;
 
     @ManyToMany(fetch = EAGER)
@@ -67,7 +69,7 @@ public class User implements Serializable {
     @JsonIgnore
     private Set<Role> roleEntities = new HashSet<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "current_address_id")
     private Address currentAddress;
 

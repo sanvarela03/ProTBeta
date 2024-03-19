@@ -7,6 +7,7 @@ import com.example.springbootjwtauthentication.service.interfaces.TransporterAns
 import com.google.firebase.messaging.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +41,8 @@ public class TransporterAssignmentService implements TransporterAnswerListener {
     private Transporter lastTransporterNotified;
     private Order order;
     private boolean ignored = true;
-    private final Long deadline = 60_000L; // 2 minutes
+    @Value("${santi.app.deadlineTransportationAssignmentMs}")
+    private Long deadline;
 
 
     /**
@@ -167,6 +169,7 @@ public class TransporterAssignmentService implements TransporterAnswerListener {
             timer.purge();
         }
     }
+
     private Timer timer;
 
     private class DeadlineTask extends TimerTask {
@@ -182,8 +185,8 @@ public class TransporterAssignmentService implements TransporterAnswerListener {
 }
 /*
  * TODO:
- *  2 Necesito decidir en dónde se invocará al método startJob rta -> cuando el productor acepta del pedido
  *  1 Necesito probar esta funcionalidad si o si-> PRUEBAS UNITARIAS
+ *  2 Necesito decidir en dónde se invocará al método startJob rta -> cuando el productor acepta del pedido
  *  3 Una vez decidido en dónde se invocará al método necesito decidir cómo se deben crear los objetos ->
  *  4 Posiblemente el gestor de asignación deba ser un singleton
  * */

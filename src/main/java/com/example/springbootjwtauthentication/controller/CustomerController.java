@@ -15,14 +15,14 @@ import java.util.concurrent.ExecutionException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/customer")
+@RequestMapping("/v1/api/customers")
 @Slf4j
 public class CustomerController {
 
     @Autowired
     private OrderServiceApi orderServiceApi;
 
-    @PostMapping("/add-order")
+    @PostMapping("/orders/order")
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<?> addOrder(HttpServletRequest http, @Valid @RequestBody OrderRequest request) throws FirebaseMessagingException, InterruptedException, ExecutionException {
         log.info("Solicitud para agregar orden recibida");

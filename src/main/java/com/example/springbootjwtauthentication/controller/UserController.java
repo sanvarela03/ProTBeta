@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/v1/api/users")
 @Slf4j
 public class UserController {
     @Autowired
     private AddressServiceApi addressServiceApi;
 
-    @PostMapping("/add-address")
+    @PostMapping("/address")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> addAddress(HttpServletRequest http, @Valid @RequestBody AddAddressRequest request) {
         return addressServiceApi.addAddress(http, request);

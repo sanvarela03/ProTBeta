@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class ProducerAnswerRequest {
     private Long orderId;
     private boolean accepted;
+    private String message;
 }

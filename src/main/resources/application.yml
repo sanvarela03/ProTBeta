@@ -34,7 +34,8 @@ santi:
   app:
     jwtSecret: ijEjr4sgDxL2UV10ySRfEP2FuwKVNnkVEqOUSutpUSV764Is6J7kceF7jR5tvQlQNGH1yV5AWFin6KMeJoatjw
     jwtExpirationMs: 60000
-    jwtRefreshExpirationMs: 1800000
+    jwtRefreshExpirationMs: 3600000
+    deadlineTransportationAssignmentMs: 60000
     mail:
       username: santivarela.agent@gmail.com
 

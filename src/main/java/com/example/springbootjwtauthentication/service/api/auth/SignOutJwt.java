@@ -20,6 +20,7 @@ public class SignOutJwt implements SignOut {
 
     @Override
     public ResponseEntity<MessageResponse> doSignOut() {
+        log.info("S_USER_DETAILS_doSignOut: {}", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         log.info("S_USER_DETAILS: {}", userDetails);

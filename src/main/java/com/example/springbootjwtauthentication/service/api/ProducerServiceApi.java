@@ -1,12 +1,9 @@
 package com.example.springbootjwtauthentication.service.api;
 
-import com.example.springbootjwtauthentication.model.Customer;
-import com.example.springbootjwtauthentication.model.Order;
-import com.example.springbootjwtauthentication.model.Producer;
-import com.example.springbootjwtauthentication.model.Transporter;
+import com.example.springbootjwtauthentication.model.*;
 import com.example.springbootjwtauthentication.payload.request.ProducerAnswerRequest;
+import com.example.springbootjwtauthentication.payload.response.ProducerInfoResponse;
 import com.example.springbootjwtauthentication.service.implementations.*;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +24,6 @@ public class ProducerServiceApi {
     @Autowired
     private OrderService orderService;
     @Autowired
-    private FirebaseMessaging firebaseMessaging;
-    @Autowired
     private OrderStatusManagerService orderStatusManagerService;
     @Autowired
     private AutowireCapableBeanFactory beanFactory;
@@ -36,6 +31,13 @@ public class ProducerServiceApi {
     private TransporterAssignmentManager assignmentManager;
     @Autowired
     private TransporterService transporterService;
+    @Autowired
+    private NotificationService notificationService;
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private AddressService addressService;
 
     public ResponseEntity<?> acceptOrder(HttpServletRequest http, ProducerAnswerRequest request) throws FirebaseMessagingException {
         Producer producer = producerService.getProducerByUsername(jwtService.extractUsername(http));
@@ -61,7 +63,7 @@ public class ProducerServiceApi {
     private void handleAccepted(Order order) throws FirebaseMessagingException {
         Customer customer = order.getCustomer();
         orderStatusManagerService.accepted(order);
-        sendFirebaseNotificaction(customer, order);
+        sendFirebaseNotification(customer, order);
 
         TransporterAssignmentService transporterAssignmentServiceService = beanFactory.createBean(TransporterAssignmentService.class);
 
@@ -70,16 +72,35 @@ public class ProducerServiceApi {
 
     /**
      * Sep esta funcion necesita ser mejorada
-     *
+     * <p>
      * Buscar transportador en función de su ubicación (distancia mas cercana al pedido)
-     * */
+     */
     private List<Transporter> findTransporters() {
         return transporterService.getAllTransporters();
     }
 
-    private void sendFirebaseNotificaction(Customer customer, Order order) {
+    private void sendFirebaseNotification(Customer customer, Order order) {
         //TODO
-        log.info("SIMULACRO DE NOTIFICACION AL COMPRADOR ...");
+        notificationService.notifyCustomer(order, customer);
+    }
+
+
+    public ResponseEntity<ProducerInfoResponse> getProducer(Long userId) {
+        Producer producer = producerService.getProducerById(userId);
+        List<Product> products = productService.getAllProductsByProducerId(userId);
+        List<Address> addressList = addressService.getAllAddressByUserId(userId);
+
+        ProducerInfoResponse producerInfoResponse = new ProducerInfoResponse();
+
+        producerInfoResponse.setProducerId(producer.getId());
+        producerInfoResponse.setName(producer.getName());
+        producerInfoResponse.setLastname(producer.getLastName());
+        producerInfoResponse.setUsername(producer.getUsername());
+        producerInfoResponse.setEmail(producer.getEmail());
+        producerInfoResponse.setAddressList(addressList);
+        producerInfoResponse.setProductsList(products);
+
+        return ResponseEntity.ok().body(producerInfoResponse);
     }
 
     /**

@@ -17,6 +17,9 @@ public class OrderRequest {
     @NotBlank
     private Long producerId;
     private Long deliveryAddressId;
+    private String paymentMethod;
+    private double estimatedDistance;
+    private double estimatedTime;
 
     @NotBlank
     private List<OrderProductRequest> products;

@@ -1,6 +1,6 @@
 package com.example.springbootjwtauthentication.model;
 
-import com.example.springbootjwtauthentication.model.PK.OrderStatePK;
+import com.example.springbootjwtauthentication.model.PK.OrderStatusPK;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,18 +17,16 @@ public class OrderStatus implements Serializable {
     private static final long serialVersionUID = 321321123121L;
 
     @EmbeddedId
-    private OrderStatePK id = new OrderStatePK();
+    private OrderStatusPK id = new OrderStatusPK();
 
     @ManyToOne(
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
+            fetch = FetchType.LAZY
     )
     @MapsId("orderId")
     private Order order;
 
     @ManyToOne(
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
+            fetch = FetchType.LAZY
     )
     @MapsId("statusId")
     private Status status;

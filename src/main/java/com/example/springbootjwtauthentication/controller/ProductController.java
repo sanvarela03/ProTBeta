@@ -14,25 +14,26 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping("/v1/api/products")
 @Slf4j
 public class ProductController {
-
     @Autowired
     private ProductServiceApi productServiceApi;
 
-    @GetMapping("/products")
+    @GetMapping
     @PreAuthorize("hasRole('PRODUCER')")
     public ResponseEntity<?> getAllProducts(HttpServletRequest http) {
         return productServiceApi.getAllProducts(http);
     }
-    @PostMapping("/add-product")
+
+    @PostMapping
     @PreAuthorize("hasRole('PRODUCER')")
     public ResponseEntity<?> addProduct(HttpServletRequest http, @Valid @RequestBody AddProductRequest request) {
         log.info("Solicitud para agregar producto recibida");
         return productServiceApi.addProduct(http, request);
     }
-    @PutMapping("/update-product")
+
+    @PutMapping
     @PreAuthorize("hasRole('PRODUCER')")
     public ResponseEntity<?> updateProduct(HttpServletRequest http, @Valid @RequestBody UpdateProductRequest request) {
         return productServiceApi.updateProduct(http, request);

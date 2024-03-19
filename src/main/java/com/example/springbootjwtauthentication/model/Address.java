@@ -1,6 +1,6 @@
 package com.example.springbootjwtauthentication.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,27 +16,34 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @Builder
 public class Address implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String name;
-    private String country;
-    private String state;
-    private String city;
     private String street;
-    private String zip;
-    private double longitude;
+    private String instruction;
     private double latitude;
+    private double longitude;
 
-    @ManyToOne(
-            cascade = CascadeType.ALL
+    @ManyToOne
+    @JoinColumn(
+            name = "city_id",
+            referencedColumnName = "id"
     )
+    @ToString.Exclude
+    private City city;
+
+    @ManyToOne
     @JoinColumn(
             name = "user_id",
             referencedColumnName = "id"
     )
     @ToString.Exclude
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("userId")
     private User user;
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 }

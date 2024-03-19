@@ -26,7 +26,12 @@ public class Product implements Serializable {
     private Long id;
     private String name;
     private String description;
-    private double weightPerUnit;
+
+    private double weight;
+    private double length;
+    private double width;
+    private double height;
+
     private double price;
     private int unitsAvailable;
     private boolean isAvailable;

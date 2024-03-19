@@ -13,7 +13,10 @@ public class ProductSerializerService {
                 .name(request.getName())
                 .unitsAvailable(request.getUnitsAvailable())
                 .description(request.getDescription())
-                .weightPerUnit(request.getWeightPerUnit())
+                .weight(request.getWeightPerUnit_kg())
+                .height(request.getHeight_cm()/100)
+                .width(request.getWidth_cm()/100)
+                .length(request.getLength_cm()/100)
                 .price(request.getPrice())
                 .isAvailable(true)
                 .producer(producer)
@@ -25,7 +28,7 @@ public class ProductSerializerService {
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
         product.setUnitsAvailable(request.getUnitsAvailable());
-        product.setWeightPerUnit(request.getWeightPerUnit());
+        product.setWeight(request.getWeightPerUnit());
         product.setAvailable(request.isAvailable());
     }
 }

@@ -2,6 +2,7 @@ package com.example.springbootjwtauthentication.security.service;
 
 import com.example.springbootjwtauthentication.exception.TokenRefreshException;
 import com.example.springbootjwtauthentication.model.RefreshToken;
+import com.example.springbootjwtauthentication.model.User;
 import com.example.springbootjwtauthentication.repository.RefreshTokenRepository;
 import com.example.springbootjwtauthentication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,14 @@ public class RefreshTokenService {
         return refreshTokenRepository.findByToken(token);
     }
 
-    public RefreshToken createRefreshToken(Long userId) {
+    public RefreshToken getByUser(User user) {
+        return refreshTokenRepository.findByUser(user).orElseThrow(() -> new RuntimeException("User not found in RefreshTokenService with id : " + user.getId()));
+    }
+
+    public RefreshToken createRefreshToken(User user) {
         RefreshToken refreshToken = new RefreshToken();
 
-        refreshToken.setUser(userRepository.findById(userId).get());
+        refreshToken.setUser(user);
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
 
@@ -46,6 +51,10 @@ public class RefreshTokenService {
         }
 
         return token;
+    }
+
+    public Boolean existsByUser(User user) {
+        return refreshTokenRepository.existsByUser(user).orElseThrow(() -> new RuntimeException("Error in RefreshTokenService with user: " + user.getId()));
     }
 
     @Transactional

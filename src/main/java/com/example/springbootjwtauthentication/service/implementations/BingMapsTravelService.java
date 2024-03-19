@@ -1,6 +1,7 @@
 package com.example.springbootjwtauthentication.service.implementations;
 
 
+import com.example.springbootjwtauthentication.model.Address;
 import com.example.springbootjwtauthentication.model.Order;
 import com.example.springbootjwtauthentication.payload.response.bing.BingMapsDirectionsResponse;
 import com.example.springbootjwtauthentication.payload.response.bing.Resource;
@@ -16,8 +17,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Service
 @Slf4j
-public class BingMapsAsyncService {
-
+public class BingMapsTravelService {
     @Value("${bing.maps.apikey}")
     private String apiKey;
     private final String BING_URL = "http://dev.virtualearth.net/REST/V1/Routes";
@@ -26,7 +26,7 @@ public class BingMapsAsyncService {
     @Autowired
     private OrderService orderService;
 
-    @Async
+
     public CompletableFuture<Resource> getDistance(double fromLatitude, double fromLongitude, double toLatitude, double toLongitude) throws InterruptedException {
         String url = getFormat(fromLatitude, fromLongitude, toLatitude, toLongitude);
         RestTemplate restTemplate = new RestTemplate();
@@ -40,13 +40,39 @@ public class BingMapsAsyncService {
         return CompletableFuture.completedFuture(resources.get(0));
     }
 
-    @Async
-    public void findEstimatedDistance(Order order) {
-        double fromLatitude = order.getPickupAddress().getLatitude();
-        double fromLongitude = order.getPickupAddress().getLongitude();
-        double toLatitude = order.getDeliveryAddress().getLatitude();
-        double toLongitude = order.getDeliveryAddress().getLongitude();
+//    @Async
+//    public void findEstimatedDistance(Order order) {
+//        double fromLatitude = order.getPickupAddress().getLatitude();
+//        double fromLongitude = order.getPickupAddress().getLongitude();
+//        double toLatitude = order.getDeliveryAddress().getLatitude();
+//        double toLongitude = order.getDeliveryAddress().getLongitude();
+//
+//
+//        String url = getFormat(fromLatitude, fromLongitude, toLatitude, toLongitude);
+//
+//        log.info("URL: {}", url);
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//        BingMapsDirectionsResponse response = restTemplate.getForObject(url, BingMapsDirectionsResponse.class);
+//
+//        List<Resource> resources = response.getResourceSets().get(0).getResources();
+//
+//        Resource r = resources.get(0);
+//
+//        order.setEstimatedTravelDistance(r.getTravelDistance() * 1000);
+//        order.setEstimatedTravelDuration(r.getTravelDuration());
+//
+//
+//        log.info("TAREA REALIZADA EN EL SUBPROCESO: {}", Thread.currentThread().getName());
+//
+//        orderService.saveOrder(order);
+//    }
 
+    public Resource getTravelInformation(Address from, Address to) {
+        double fromLatitude = from.getLatitude();
+        double fromLongitude = from.getLongitude();
+        double toLatitude = to.getLatitude();
+        double toLongitude = to.getLongitude();
 
         String url = getFormat(fromLatitude, fromLongitude, toLatitude, toLongitude);
 
@@ -58,14 +84,7 @@ public class BingMapsAsyncService {
         List<Resource> resources = response.getResourceSets().get(0).getResources();
 
         Resource r = resources.get(0);
-
-        order.setEstimatedTravelDistance(r.getTravelDistance() * 1000);
-        order.setEstimatedTravelDuration(r.getTravelDuration());
-
-
-        log.info("TAREA REALIZADA EN EL SUBPROCESO: {}", Thread.currentThread().getName());
-
-        orderService.saveOrder(order);
+        return r;
     }
 
     private String getFormat(double fromLatitude, double fromLongitude, double toLatitude, double toLongitude) {

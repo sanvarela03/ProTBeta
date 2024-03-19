@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static io.jsonwebtoken.SignatureAlgorithm.*;
 
@@ -27,18 +30,35 @@ public class JwtUtils {
     private int jwtExpirationMs;
 
     public String generateJwtToken(UserDetailsImpl userPrincipal) {
-        return generateTokenFromUsername(userPrincipal.getUsername());
+        return generateTokenFromUsername(userPrincipal.getUsername(), userPrincipal.getId());
     }
 
-    public String generateTokenFromUsername(String username) {
-        return Jwts.builder().setSubject(username).setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(HS512, jwtSecret)
+    public String generateTokenFromUsername(String username, Long id) {
+
+        return Jwts.builder()
+                .setSubject(username)
+                .signWith(HS512, jwtSecret)
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .setIssuedAt(new Date())
+                .claim("uid", id)
                 .compact();
     }
 
     public String getUserNameFromJwtToken(String token) {
+
+//        log.warn("HOLA TE EXTAÑO: {} ", Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().get("uid").toString());
+
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
+
+    public String getUserIdFromJwtToken(HttpServletRequest http) {
+        return getUserIdFromJwtToken(parseJwt(http));
+    }
+
+    public String getUserIdFromJwtToken(String token) {
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().get("uid").toString();
+    }
+
 
     public String getUserNameFromJwtToken(HttpServletRequest http) {
         return getUserNameFromJwtToken(parseJwt(http));
@@ -63,7 +83,6 @@ public class JwtUtils {
         } catch (IllegalArgumentException e) {
             logger.error("JWT claims string is empty: {}", e.getMessage());
         }
-
         return false;
     }
 

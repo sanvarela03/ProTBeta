@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddAddressRequest {
-
+    @NotBlank
     private String name;
     @NotBlank
     private String country;
@@ -21,7 +21,7 @@ public class AddAddressRequest {
     @NotBlank
     private String street;
     @NotBlank
-    private String zip;
+    private String instruction;
     @NotBlank
     private Boolean isCurrentAddress;
     @NotBlank

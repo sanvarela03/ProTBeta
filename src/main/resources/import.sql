@@ -22,3 +22,6 @@ INSERT INTO payment_methods(name) VALUES ('DEBIT_CARD');
 INSERT INTO payment_methods(name) VALUES ('CASH_ON_DELIVERY');
 INSERT INTO payment_methods(name) VALUES ('BANK_TRANSFER');
 INSERT INTO payment_methods(name) VALUES ('OTHER');
+
+INSERT INTO rates(name, value, currency, unit_description) VALUES ('GAS', 4068.25152, 'COP', 'COP / Liter');
+INSERT INTO rates(name, value, currency, unit_description) VALUES ('WEIGHT', 1000.0, 'COP', 'COP/Kg');

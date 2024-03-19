@@ -17,6 +17,7 @@ public class TransporterAssignmentManager {
     private HashMap<Long, TransporterAnswerListener> listeners = new HashMap<>();
 
     public void subscribe(TransporterAnswerListener listener, Order order) {
+
         boolean valid = !listeners.containsKey(order.getId()) && !listeners.containsValue(listener);
         if (valid) {
             this.listeners.put(order.getId(), listener);

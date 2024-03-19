@@ -19,10 +19,16 @@ public class NotificationService {
     @Autowired
     private FirebaseMessaging firebaseMessaging;
 
+    @Async
+    public void notifyCustomer(Order order, Customer customer) {
+        log.info("SIMULACRO DE NOTIFICACION AL COMPRADOR ...");
+        //TODO
+    }
 
     /**
      * Notifica al transportador que un nuevo pedido esta buscando transportador
      */
+    @Async
     public void notifyTransporter(Order order, Transporter transporter) throws FirebaseMessagingException {
 
         log.info("SIMULACIÓN DE NOTIFICACIÓN CON FIREBASE ...");
@@ -48,6 +54,11 @@ public class NotificationService {
 //        firebaseMessaging.send(msg);
     }
 
+    /**
+     * Notifica al productor que el hay un nuevo cliente realizando una solicitud del pedido
+     *
+     *
+     * */
     @Async
     public void notifyProducer(Customer customer, Producer producer) throws FirebaseMessagingException {
 

@@ -15,6 +15,13 @@ public class OrderStatusService {
     private OrderStatusRepository repository;
 
     public OrderStatus createOrderStatus(Order order, Status status) {
-        return repository.save(new OrderStatus(order, status));
+
+        OrderStatus orderStatus = new OrderStatus();
+
+        orderStatus.setOrder(order);
+        orderStatus.setStatus(status);
+        repository.save(orderStatus);
+
+        return orderStatus;
     }
 }

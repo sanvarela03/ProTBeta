@@ -5,6 +5,8 @@ import com.example.springbootjwtauthentication.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AddressService {
 
@@ -17,5 +19,9 @@ public class AddressService {
 
     public Address getAddressById(Long id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("No se pudo encontrar la dirección con ID: " + id));
+    }
+
+    public List<Address> getAllAddressByUserId(Long userId) {
+        return repository.findAllByUser_Id(userId).orElseThrow(() -> new RuntimeException("No se pudo encontrar las direcciones asociadas con el usuario con id: " + userId));
     }
 }

@@ -17,7 +17,15 @@ public class AddProductRequest {
     @NotBlank
     private double price;
     @NotBlank
-    private double weightPerUnit;
+    private String currency;
+    @NotBlank
+    private double weightPerUnit_kg;
+    @NotBlank
+    private double length_cm;
+    @NotBlank
+    private double width_cm;
+    @NotBlank
+    private double height_cm;
     @NotBlank
     private int unitsAvailable;
 }

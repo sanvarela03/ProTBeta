@@ -18,12 +18,10 @@ import java.util.List;
 @Setter
 @SuperBuilder
 public class Transporter extends User {
-
     private String fechaDeRegistro;
+    private boolean isAvailable;
 
-    @OneToMany(
-            mappedBy = "owner",
-            cascade = CascadeType.ALL
-    )
-    private List<Vehicle> vehicles = new ArrayList<>();
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "current_vehicle_id")
+    private Vehicle currentVehicle;
 }

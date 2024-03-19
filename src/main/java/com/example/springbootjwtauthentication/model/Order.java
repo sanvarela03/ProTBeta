@@ -65,17 +65,15 @@ public class Order implements Serializable {
 
     private double orderWeight;
 
+    private double orderVolume;
+
     private double estimatedTravelDistance;
 
     private double estimatedTravelDuration;
 
     private double shippingCost;
 
-
-    @ManyToOne(
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
-    )
+    @ManyToOne(fetch = FetchType.LAZY)
     private PaymentMethod paymentMethod;
 
     @Temporal(TemporalType.TIMESTAMP)

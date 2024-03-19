@@ -62,9 +62,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(
                         auth ->
                                 auth
-                                        .requestMatchers("/api/auth/**").permitAll()
-                                        .requestMatchers("/api/test/**").permitAll()
-                                        .requestMatchers("/api/calcularDistancia/**").permitAll()
+                                        .requestMatchers("/v1/api/auth/**").permitAll()
+                                        .requestMatchers("/v1/api/test/**").permitAll()
+                                        .requestMatchers("/v1/api/calcularDistancia/**").permitAll()
                                         .anyRequest()
                                         .authenticated()
                 );

@@ -6,7 +6,9 @@ import lombok.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "states", uniqueConstraints = {@UniqueConstraint(columnNames = "initials")})
+@Table(name = "states"
+//        , uniqueConstraints = {@UniqueConstraint(columnNames = "initials")}
+)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +20,7 @@ public class State {
     private String name;
     private String initials;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(
             name = "country_id",
             referencedColumnName = "id"

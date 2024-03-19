@@ -50,6 +50,8 @@ public class ProducerController {
     }
 
 
+
+
     @GetMapping("/{userId}")
     @PreAuthorize("hasRole('PRODUCER')")
     public ResponseEntity<?> getProducerInfo(@PathVariable Long userId) {

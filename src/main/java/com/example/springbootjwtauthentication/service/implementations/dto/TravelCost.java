@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GasCost {
+public class TravelCost {
     private double averageCost;
     private double higherCost;
     private double lowerCost;

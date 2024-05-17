@@ -20,6 +20,7 @@ public class OrderRequest {
     private String paymentMethod;
     private double estimatedDistance;
     private double estimatedTime;
+    private Long chosenTransporterId;
 
     @NotBlank
     private List<OrderProductRequest> products;

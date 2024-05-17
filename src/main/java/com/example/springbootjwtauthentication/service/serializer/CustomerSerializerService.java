@@ -12,7 +12,9 @@ public class CustomerSerializerService {
                 .lastName(user.getLastName())
                 .username(user.getUsername())
                 .email(user.getEmail())
+                .phone(user.getPhone())
                 .password(user.getPassword())
+                .firebaseToken(user.getFirebaseToken())
                 .roleEntities(user.getRoleEntities())
                 .build();
     }

@@ -46,7 +46,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             log.warn("EL TOKEN ES: {}", jwt);
             log.warn("EL TOKEN ES VALIDO: {}", jwtUtils.validateJwtToken(jwt));
 
-            if (jwt != null && jwtUtils.validateJwtToken(jwt)){
+            if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);

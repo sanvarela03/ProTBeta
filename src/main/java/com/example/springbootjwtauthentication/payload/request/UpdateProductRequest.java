@@ -12,17 +12,20 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UpdateProductRequest {
     @NotBlank
-    private Long id;
-    @NotBlank
     private String name;
     @NotBlank
     private String description;
     @NotBlank
     private double price;
     @NotBlank
-    private double weightPerUnit;
-    @NotBlank
     private int unitsAvailable;
     @NotBlank
+    private double weight;
+    @NotBlank
+    private double length;
+    @NotBlank
+    private double width;
+    @NotBlank
+    private double height;
     private boolean available;
 }

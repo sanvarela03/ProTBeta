@@ -37,6 +37,16 @@ public class OrderStatusManagerService {
         orderStatusService.createOrderStatus(order, transporterAssignedState);
     }
 
+    public void pickedUp(Order order) {
+        Status status = statusService.getStatusByName(EStatus.PICKED_UP);
+        orderStatusService.createOrderStatus(order, status);
+    }
+
+    public void delivered(Order order){
+        Status status = statusService.getStatusByName(EStatus.DELIVERED);
+        orderStatusService.createOrderStatus(order, status);
+    }
+
     public void shipped(Order order) {
 
     }

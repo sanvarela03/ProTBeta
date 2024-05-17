@@ -3,10 +3,12 @@ package com.example.springbootjwtauthentication.controller;
 import com.example.springbootjwtauthentication.model.Transporter;
 import com.example.springbootjwtauthentication.payload.request.TransporterAnswerRequest;
 import com.example.springbootjwtauthentication.payload.response.MessageResponse;
+import com.example.springbootjwtauthentication.service.api.TransporterServiceApi;
 import com.example.springbootjwtauthentication.service.implementations.JWTService;
 import com.example.springbootjwtauthentication.service.implementations.TransporterAssignmentManager;
 import com.example.springbootjwtauthentication.service.implementations.TransporterService;
 import com.google.firebase.messaging.FirebaseMessagingException;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/v1/api/transporters")
 @Slf4j
+@SecurityRequirement(name ="jwt-auth")
 public class TransporterController {
     @Autowired
     private TransporterAssignmentManager assignmentManager;
@@ -28,6 +31,15 @@ public class TransporterController {
     private JWTService jwtService;
     @Autowired
     private TransporterService transporterService;
+    @Autowired
+    private TransporterServiceApi transporterServiceApi;
+
+    @GetMapping("/{userId}")
+    @PreAuthorize("hasRole('TRANSPORTER')")
+    public ResponseEntity<?> getTransporterInfo(@PathVariable Long userId) {
+        return transporterServiceApi.getTransporter(userId);
+    }
+
 
     /**
      * http://localhost:8095/v1/api/transporters/{userId}/orders/{orderId}?accepted=true
@@ -54,6 +66,26 @@ public class TransporterController {
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Not allowed, expected: " + userIdFromToken + " passed: " + userId));
         }
+    }
+
+    @PutMapping("/{transporterId}/orders/{orderId}/picked-up")
+    @PreAuthorize("hasRole('TRANSPORTER')")
+    public ResponseEntity<?> confirmPickup(
+            @PathVariable Long transporterId,
+            @PathVariable Long orderId
+    ) {
+        return transporterServiceApi.confirmPickup(orderId);
+    }
+
+
+    @PutMapping("/{transporterId}/orders/{orderId}/delivered")
+    @PreAuthorize("hasRole('TRANSPORTER')")
+    public ResponseEntity<?> confirmDelivery(
+            @PathVariable Long transporterId,
+            @PathVariable Long orderId,
+            @RequestParam String code
+    ) {
+        return transporterServiceApi.confirmDelivery(orderId, code);
     }
 
     /**

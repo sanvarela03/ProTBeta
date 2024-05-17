@@ -1,5 +1,9 @@
 package com.example.springbootjwtauthentication.model;
 
+import com.example.springbootjwtauthentication.payload.request.UpdateProductRequest;
+import com.example.springbootjwtauthentication.payload.response.ProducerContactInfoResponse;
+import com.example.springbootjwtauthentication.payload.response.ProducerDetailResponse;
+import com.example.springbootjwtauthentication.payload.response.ProductDetailResponse;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
@@ -58,5 +62,31 @@ public class Product implements Serializable {
         this.price = price;
         this.isAvailable = isAvailable;
         this.producer = producer;
+    }
+
+//    public ProductDetailResponse toProductDetailResponse() {
+//        return
+//    }
+
+    public void update(UpdateProductRequest r) {
+        this.setName(r.getName());
+        this.setDescription(r.getDescription());
+        this.setPrice(r.getPrice());
+        this.setUnitsAvailable(r.getUnitsAvailable());
+        this.setWeight(r.getWeight());
+        this.setWidth(r.getWidth() / 100);
+        this.setHeight(r.getHeight() / 100);
+        this.setLength(r.getLength() / 100);
+        this.setAvailable(r.isAvailable());
+    }
+
+    public ProducerContactInfoResponse toProducerContactInfoResponse() {
+        return ProducerContactInfoResponse.builder()
+                .producerId(this.getProducer().getId())
+                .completeName(this.getProducer().getName() + " " + this.getProducer().getLastName())
+                .email(this.getProducer().getEmail())
+                .phone(this.getProducer().getPhone())
+                .build();
+
     }
 }

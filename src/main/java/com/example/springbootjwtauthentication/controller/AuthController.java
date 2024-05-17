@@ -4,6 +4,7 @@ import com.example.springbootjwtauthentication.service.api.auth.PasswordForgotJw
 import com.example.springbootjwtauthentication.payload.request.*;
 import com.example.springbootjwtauthentication.payload.response.MessageResponse;
 import com.example.springbootjwtauthentication.service.interfaces.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +61,7 @@ public class AuthController {
     /**
      * http://localhost:8095/api/auth/signout
      */
+    @SecurityRequirement(name ="jwt-auth")
     @PostMapping("/signout")
     public ResponseEntity<?> logoutUser() {
         return signOut.doSignOut();

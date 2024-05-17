@@ -17,6 +17,7 @@ import com.example.springbootjwtauthentication.service.serializer.CustomerSerial
 import com.example.springbootjwtauthentication.service.serializer.ProducerSerializerService;
 import com.example.springbootjwtauthentication.service.serializer.TransporterSerializerService;
 import com.example.springbootjwtauthentication.service.serializer.UserSerializerService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +28,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class SignUpJwt implements SignUp {
     @Autowired
     private UserService userService;
@@ -48,7 +50,7 @@ public class SignUpJwt implements SignUp {
 
     @Override
     public ResponseEntity<MessageResponse> doSignUp(SignupRequest request) {
-
+        log.info("SignUpJwt | doSignUp | SignupRequest = {}", request);
         if (userService.existsByUsername(request.getUsername())) {
             return ResponseEntity.badRequest().body(new MessageResponse("S_Error: Este usuario ya está en uso"));
         }
@@ -59,12 +61,14 @@ public class SignUpJwt implements SignUp {
         User user = userSerializerService.getUser(request);
         user.setRoleEntities(userSerializerService.getRoles(request));
 
+        log.info("SignUpJwt | doSignUp | user = {}", user);
+
         if (request.getRole().contains("prod")) {
-            producerService.saveProducer(producerSerializerService.getProducerFromUser(user));
+            producerService.saveProducer(user.toProducer());
         } else if (request.getRole().contains("cust")) {
-            customerService.saveCustomer(customerSerializerService.getCustomerFromUser(user));
+            customerService.saveCustomer(user.toCustomer());
         } else if (request.getRole().contains("tr")) {
-            transporterService.saveTransporter(transporterSerializerService.getTransporterFromUser(user));
+            transporterService.saveTransporter(user.toTransporter());
         } else {
             userService.saveUser(user);
         }

@@ -2,6 +2,7 @@ package com.example.springbootjwtauthentication.model;
 
 import com.example.springbootjwtauthentication.model.PK.OrderStatusPK;
 
+import com.example.springbootjwtauthentication.payload.response.StatusResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,13 +35,22 @@ public class OrderStatus implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    @PrePersist
-    public void prePersist() {
-        createdAt = new Date();
-    }
+//    @PrePersist
+//    public void prePersist() {
+//        createdAt = new Date();
+//    }
 
     public OrderStatus(Order order, Status status) {
         this.order = order;
         this.status = status;
+    }
+
+    public StatusResponse toStatusResponse() {
+        return StatusResponse.builder()
+                .statusId(this.getStatus().getId())
+                .name(this.getStatus().getName().toString())
+                .createdAt(this.getCreatedAt())
+                .orderId(this.getOrder().getId())
+                .build();
     }
 }

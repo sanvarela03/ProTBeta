@@ -30,6 +30,8 @@ spring:
           auth: true
           starttls:
             enable: true
+  jackson:
+    time-zone: GMT+7
 santi:
   app:
     jwtSecret: ijEjr4sgDxL2UV10ySRfEP2FuwKVNnkVEqOUSutpUSV764Is6J7kceF7jR5tvQlQNGH1yV5AWFin6KMeJoatjw
@@ -53,5 +55,10 @@ google:
 bing:
   maps:
     apikey: AltqUH2HBpugYCVAkuvz-jM6YAdBdiTmDBr0mcLx9QTU6Bt6TozzweZT7oBQMC2I
+
+
+# swagger-ui custom path
+springdoc.swagger-ui.path: /swagger-ui.html
+
 
 

@@ -29,6 +29,10 @@ public class ProductService {
         return productRepository.findByProducer_Id(producerId)
                 .orElseThrow(() -> new RuntimeException("No se encontró los productos para el productor ocn Id:" + producerId));
     }
+    public List<Product> getAllAvailableProductsByProducerId(Long producerId) {
+        return productRepository.findAvailableProductsByProducerId(producerId)
+                .orElseThrow(() -> new RuntimeException("No se encontró los productos para el productor ocn Id:" + producerId));
+    }
 
     public Product saveProduct(Product product) {
         return productRepository.save(product);

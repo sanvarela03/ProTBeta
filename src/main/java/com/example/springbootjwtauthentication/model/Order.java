@@ -1,5 +1,7 @@
 package com.example.springbootjwtauthentication.model;
 
+import com.example.springbootjwtauthentication.payload.OrderInfoResponse;
+import com.example.springbootjwtauthentication.payload.response.*;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
@@ -73,6 +75,8 @@ public class Order implements Serializable {
 
     private double shippingCost;
 
+    private Long chosenTransporterId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private PaymentMethod paymentMethod;
 
@@ -89,6 +93,11 @@ public class Order implements Serializable {
     @ManyToOne
     @JoinColumn(name = "delivery_address_id")
     private Address deliveryAddress;
+
+
+    private String deliveryVerificationCode;
+    @JsonIgnore
+    private Date deliveryVerificationCodeTimestamp;
 
     public Order(Customer customer, Producer producer) {
         this.customer = customer;
@@ -122,4 +131,66 @@ public class Order implements Serializable {
         Date parsedDate = dateFormat.parse(dateString);
         this.estimatedPickupDate = parsedDate;
     }
+
+    public OrderInfoResponse toOrderInfoResponse(
+            List<StatusResponse> statusResponseList,
+            List<ProductResponse> productResponseList
+    ) {
+        OrderInfoResponse newOrderInfoResponse = new OrderInfoResponse();
+
+
+        newOrderInfoResponse.setOrderId(this.getId());
+        newOrderInfoResponse.setCustomerContactInfoResponse(getCustomerContactInfoResponse());
+        newOrderInfoResponse.setProducerContactInfoResponse(getProducerContactInfoResponse());
+        newOrderInfoResponse.setTransporterContactInfoResponse(getTransporterContactInfoResponse());
+        newOrderInfoResponse.setOrderCost(this.getOrderCost());
+        newOrderInfoResponse.setOrderWeight(this.getOrderWeight());
+        newOrderInfoResponse.setOrderVolume(this.getOrderVolume());
+        newOrderInfoResponse.setEstimatedTravelDistance(this.getEstimatedTravelDistance());
+        newOrderInfoResponse.setEstimatedTravelDuration(this.getEstimatedTravelDuration());
+        newOrderInfoResponse.setShippingCost(this.getShippingCost());
+        if (this.getPaymentMethod() != null) {
+            newOrderInfoResponse.setPaymentMethod(this.getPaymentMethod().getName().toString());
+        }
+        newOrderInfoResponse.setMaxDeliveryDate(this.getMaxDeliveryDate());
+        newOrderInfoResponse.setEstimatedPickupDate(this.getEstimatedPickupDate());
+        newOrderInfoResponse.setPickupAddress(this.getPickupAddress().toAddressResponse());
+        newOrderInfoResponse.setDeliveryAddress(this.getDeliveryAddress().toAddressResponse());
+        newOrderInfoResponse.setStatusList(statusResponseList);
+        newOrderInfoResponse.setItems(productResponseList);
+
+
+        return newOrderInfoResponse;
+    }
+
+    private TransporterContactInfoResponse getTransporterContactInfoResponse() {
+        TransporterContactInfoResponse newTransporterContactInfo = new TransporterContactInfoResponse();
+        if (this.getTransporter() != null) {
+            newTransporterContactInfo.setTransporterId(this.getTransporter().getId());
+            newTransporterContactInfo.setCompleteName(this.getTransporter().getName() + " " + this.getTransporter().getLastName());
+            newTransporterContactInfo.setPhone(this.getTransporter().getPhone());
+            newTransporterContactInfo.setEmail(this.getTransporter().getEmail());
+        }
+        return newTransporterContactInfo;
+    }
+
+    private ProducerContactInfoResponse getProducerContactInfoResponse() {
+        ProducerContactInfoResponse newProducerContactInfo = new ProducerContactInfoResponse();
+        newProducerContactInfo.setProducerId(this.getProducer().getId());
+        newProducerContactInfo.setCompleteName(this.getProducer().getName() + " " + this.getProducer().getLastName());
+        newProducerContactInfo.setPhone(this.getProducer().getPhone());
+        newProducerContactInfo.setEmail(this.getProducer().getEmail());
+        return newProducerContactInfo;
+    }
+
+    private CustomerContactInfoResponse getCustomerContactInfoResponse() {
+        CustomerContactInfoResponse newCustomerContactInfo = new CustomerContactInfoResponse();
+        newCustomerContactInfo.setCustomerId(this.getCustomer().getId());
+        newCustomerContactInfo.setCompleteName(this.getCustomer().getName() + " " + this.getCustomer().getLastName());
+        newCustomerContactInfo.setPhone(this.getCustomer().getPhone());
+        newCustomerContactInfo.setEmail(this.getCustomer().getEmail());
+        return newCustomerContactInfo;
+    }
+
+
 }

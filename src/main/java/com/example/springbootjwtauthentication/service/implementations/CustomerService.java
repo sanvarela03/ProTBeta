@@ -22,6 +22,11 @@ public class CustomerService {
                 .orElseThrow(() -> new RuntimeException("No se encontró el cliente con usuario: " + username));
     }
 
+    public Customer getCustomerById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No se encontró el cliente con ID: " + id));
+    }
+
     public Customer saveCustomer(Customer customer) {
         return repository.save(customer);
     }

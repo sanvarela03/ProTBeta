@@ -21,6 +21,10 @@ public class OrderProductService {
         return repository.saveAll(orderProductSet);
     }
 
+    public List<OrderProduct> getAllOrderProductsByOrderId(Long id) {
+        return repository.findAllByOrderId(id).orElseThrow(() -> new RuntimeException("No se encontró los productos para el pedido con ID: " + id));
+    }
+
     public OrderProduct createOrderProduct(Order order, Product product, int units) {
         return repository.save(new OrderProduct(order, product, units));
     }

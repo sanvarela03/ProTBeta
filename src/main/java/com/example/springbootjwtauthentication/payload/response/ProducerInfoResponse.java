@@ -18,6 +18,8 @@ public class ProducerInfoResponse {
     private String name;
     private String lastname;
     private String email;
-    private List<Address> addressList;
+    private String phone;
+    private Long currentAddressId;
+    private List<AddressResponse> addressList;
     private List<Product> productsList;
 }

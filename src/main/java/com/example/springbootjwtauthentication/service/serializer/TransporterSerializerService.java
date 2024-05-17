@@ -13,6 +13,8 @@ public class TransporterSerializerService {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .password(user.getPassword())
+                .phone(user.getPhone())
+                .firebaseToken(user.getFirebaseToken())
                 .roleEntities(user.getRoleEntities())
                 .build();
     }

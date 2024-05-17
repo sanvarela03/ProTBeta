@@ -27,6 +27,6 @@ public class SignOutJwt implements SignOut {
 
         Long userId = userDetails.getId();
         refreshTokenService.deleteByUserId(userId);
-        return ResponseEntity.ok(new MessageResponse("Log out successful!"));
+        return ResponseEntity.ok(new MessageResponse("Sesión cerrada correctamente ..."));
     }
 }

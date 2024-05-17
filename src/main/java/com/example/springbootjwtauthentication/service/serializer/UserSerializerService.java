@@ -27,6 +27,8 @@ public class UserSerializerService {
                 .lastName(request.getLastName())
                 .username(request.getUsername())
                 .email(request.getEmail())
+                .phone(request.getPhone())
+                .firebaseToken(request.getFirebaseToken())
                 .password(encoder.encode(request.getPassword()))
                 .build();
     }

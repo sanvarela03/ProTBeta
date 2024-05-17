@@ -57,17 +57,27 @@ public class WebSecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         auth ->
                                 auth
+                                        .requestMatchers("/v2/api-docs").permitAll()
+                                        .requestMatchers("/v3/api-docs/**").permitAll()
+                                        .requestMatchers("/swagger-resources/**").permitAll()
+                                        .requestMatchers("/configuration/security").permitAll()
+                                        .requestMatchers("/swagger-ui.html").permitAll()
+                                        .requestMatchers("/webjars/**").permitAll()
+                                        .requestMatchers("/swagger-ui/**").permitAll()
+
                                         .requestMatchers("/v1/api/auth/**").permitAll()
                                         .requestMatchers("/v1/api/test/**").permitAll()
                                         .requestMatchers("/v1/api/calcularDistancia/**").permitAll()
                                         .anyRequest()
                                         .authenticated()
-                );
+                )
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+
+        ;
 
         http.authenticationProvider(authenticationProvider());
 

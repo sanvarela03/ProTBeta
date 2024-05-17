@@ -54,6 +54,8 @@ public class TransporterAssignmentService implements TransporterAnswerListener {
      * @param order                     El pedido al cuál se le está buscando el transportador
      */
     public void startJob(TransporterAssignmentManager manager, List<Transporter> candidateTransportersList, Order order) throws FirebaseMessagingException {
+        log.info(" TransporterAssignmentService | candidateTransportersList: {}", candidateTransportersList);
+
         this.candidateTransportersList = candidateTransportersList;
         this.order = order;
         manager.subscribe(this, order);

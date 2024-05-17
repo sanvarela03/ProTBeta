@@ -7,6 +7,7 @@ import com.example.springbootjwtauthentication.payload.request.AddAddressRequest
 import com.example.springbootjwtauthentication.service.api.ProducerServiceApi;
 import com.example.springbootjwtauthentication.service.implementations.JWTService;
 import com.google.firebase.messaging.FirebaseMessagingException;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/v1/api/producers")
 @Slf4j
+@SecurityRequirement(name ="jwt-auth")
 public class ProducerController {
     @Autowired
     private ProducerServiceApi producerServiceApi;
@@ -31,26 +33,23 @@ public class ProducerController {
     /**
      * http://localhost:8095/v1/api/producers/{userId}/orders/{orderId}?accepted=true
      */
-    @PostMapping("/{userId}/orders/{orderId}")
+    @PutMapping("/{userId}/orders/{orderId}")
     @PreAuthorize("hasRole('PRODUCER')")
     public ResponseEntity<?> acceptOrder(
             @PathVariable Long userId,
             @PathVariable Long orderId,
             @RequestParam boolean accepted,
-            @RequestBody ProducerAnswerRequest request,
+//            @RequestBody ProducerAnswerRequest request,
             HttpServletRequest http
     ) throws FirebaseMessagingException {
         Long userIdFromToken = jwtService.extractUserId(http);
 
         if (Objects.equals(userIdFromToken, userId)) {
-            return producerServiceApi.acceptOrder(http, request);
+            return producerServiceApi.acceptOrder(http, orderId,accepted);
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Not allowed, expected: " + userIdFromToken + " passed: " + userId));
         }
     }
-
-
-
 
     @GetMapping("/{userId}")
     @PreAuthorize("hasRole('PRODUCER')")

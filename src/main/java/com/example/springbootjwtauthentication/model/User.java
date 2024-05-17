@@ -1,5 +1,8 @@
 package com.example.springbootjwtauthentication.model;
 
+import com.example.springbootjwtauthentication.payload.request.UpdateFirebaseTokenRequest;
+import com.example.springbootjwtauthentication.payload.request.UserInfoRequest;
+import com.example.springbootjwtauthentication.payload.response.UserInfoResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -50,7 +53,6 @@ public class User implements Serializable {
     @Size(max = 120)
     @JsonIgnore
     private String password;
-
     private String name;
     private String lastName;
     @JsonIgnore
@@ -59,6 +61,8 @@ public class User implements Serializable {
     private Date verificationCodeTimestamp;
     @JsonIgnore
     private String firebaseToken;
+
+    private String phone;
 
     @ManyToMany(fetch = EAGER)
     @JoinTable(
@@ -77,5 +81,69 @@ public class User implements Serializable {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public Producer toProducer() {
+        return Producer.builder()
+                .name(this.getName())
+                .lastName(this.getLastName())
+                .username(this.getUsername())
+                .fechaDeRegistro((new Date()).toString())//TODO : Complementar
+                .email(this.getEmail())
+                .phone(this.getPhone())
+                .firebaseToken(this.getFirebaseToken())
+                .password(this.getPassword())
+                .roleEntities(this.getRoleEntities())
+                .build();
+    }
+
+
+    public Customer toCustomer() {
+        return Customer.builder()
+                .name(this.getName())
+                .lastName(this.getLastName())
+                .username(this.getUsername())
+                .email(this.getEmail())
+                .phone(this.getPhone())
+                .password(this.getPassword())
+                .firebaseToken(this.getFirebaseToken())
+                .roleEntities(this.getRoleEntities())
+                .build();
+    }
+
+    public Transporter toTransporter() {
+        return Transporter.builder()
+                .name(this.getName())
+                .lastName(this.getLastName())
+                .username(this.getUsername())
+                .email(this.getEmail())
+                .password(this.getPassword())
+                .phone(this.getPhone())
+                .firebaseToken(this.getFirebaseToken())
+                .roleEntities(this.getRoleEntities())
+                .build();
+    }
+
+    public UserInfoResponse toUserInfoResponse() {
+        return UserInfoResponse.builder()
+                .userId(this.getId())
+                .username(this.getUsername())
+                .name(this.getName())
+                .lastName(this.getLastName())
+                .email(this.getEmail())
+                .phone(this.getPhone())
+                .build();
+    }
+
+    public void update(UserInfoRequest request) {
+        this.setUsername(request.getUsername());
+        this.setName(request.getName());
+        this.setLastName(request.getLastName());
+        this.setEmail(request.getEmail());
+        this.setPhone(request.getPhone());
+    }
+
+    public void updateFirebaseToken(UpdateFirebaseTokenRequest request) {
+        this.setFirebaseToken(request.getFirebaseToken());
     }
 }

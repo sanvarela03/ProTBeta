@@ -1,5 +1,6 @@
 package com.example.springbootjwtauthentication.payload.request;
 
+import com.example.springbootjwtauthentication.model.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -29,4 +30,9 @@ public class SignupRequest {
 
     @NotBlank
     private String lastName;
+
+
+    private String phone;
+    private String firebaseToken;
+
 }

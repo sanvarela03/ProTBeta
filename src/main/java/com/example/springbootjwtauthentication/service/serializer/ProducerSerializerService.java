@@ -15,6 +15,8 @@ public class ProducerSerializerService {
                 .username(user.getUsername())
                 .fechaDeRegistro((new Date()).toString())//TODO : Complementar
                 .email(user.getEmail())
+                .phone(user.getPhone())
+                .firebaseToken(user.getFirebaseToken())
                 .password(user.getPassword())
                 .roleEntities(user.getRoleEntities())
                 .build();

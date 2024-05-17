@@ -1,8 +1,15 @@
 package com.example.springbootjwtauthentication.service.implementations;
 
+import com.example.springbootjwtauthentication.model.Address;
+import com.example.springbootjwtauthentication.model.Customer;
+import com.example.springbootjwtauthentication.model.Order;
 import com.example.springbootjwtauthentication.model.Transporter;
+import com.example.springbootjwtauthentication.payload.OrderInfoResponse;
+import com.example.springbootjwtauthentication.payload.response.AddressResponse;
+import com.example.springbootjwtauthentication.payload.response.CustomerInfoResponse;
 import com.example.springbootjwtauthentication.repository.TransporterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +28,11 @@ public class TransporterService {
 
     public Transporter getById(Long userId) {
         return repository.findById(userId).orElseThrow(
-                () -> new UsernameNotFoundException("User not found with ID: " + userId));
+                () -> new UsernameNotFoundException("No se encontró el transportador con ID: " + userId));
     }
+
+
+
 
 
     public List<Transporter> getAllTransporters() {

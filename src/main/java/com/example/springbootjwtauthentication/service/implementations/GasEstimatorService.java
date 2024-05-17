@@ -4,7 +4,7 @@ import com.example.springbootjwtauthentication.model.Address;
 import com.example.springbootjwtauthentication.model.Enum.ERate;
 import com.example.springbootjwtauthentication.payload.response.bing.Resource;
 import com.example.springbootjwtauthentication.service.implementations.dto.FuelConsumptionStatistics;
-import com.example.springbootjwtauthentication.service.implementations.dto.GasCost;
+import com.example.springbootjwtauthentication.service.implementations.dto.TravelCost;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,7 +41,7 @@ public class GasEstimatorService {
         return totalGasConsumption * gasPrice;
     }
 
-    public GasCost getGasConsumptionCost(Address from, Address to) throws ExecutionException, InterruptedException {
+    public TravelCost getGasConsumptionCost(Address from, Address to) throws ExecutionException, InterruptedException {
 
         Resource resource = getRoadInfo(from, to);
         log.info("RESOURCE : {}", resource);
@@ -57,7 +57,7 @@ public class GasEstimatorService {
         double higherCost = getGasConsumptionCost(distance, statistics.getAverage() + statistics.getStandardDeviation());
         double lowerCost = getGasConsumptionCost(distance, statistics.getAverage() - statistics.getStandardDeviation());
 
-        return GasCost.builder()
+        return TravelCost.builder()
                 .averageCost(averageCost)
                 .higherCost(higherCost)
                 .lowerCost(lowerCost)

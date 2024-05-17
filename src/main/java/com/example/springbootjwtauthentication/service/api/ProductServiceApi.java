@@ -30,31 +30,50 @@ public class ProductServiceApi {
     private JWTService jwtService;
     @Autowired
     private ProductService productService;
-    @Autowired
-    private ProductSerializerService serializerService;
 
     public ResponseEntity<ProductsResponse> getAllProducts(HttpServletRequest http) {
-        Producer producer = producerService.getProducerByUsername(jwtService.extractUsername(http));
+        String username = jwtService.extractUsername(http);
+        Producer producer = producerService.getProducerByUsername(username);
         List<Product> products = productService.getAllProductsByProducerId(producer.getId());
         return ResponseEntity.ok(new ProductsResponse(products));
     }
 
     public ResponseEntity<MessageResponse> addProduct(HttpServletRequest http, AddProductRequest request) {
-        Producer producer = producerService.getProducerByUsername(jwtService.extractUsername(http));
-        Product newProduct = serializerService.getProduct(request, producer);
+        String username = jwtService.extractUsername(http);
+        Producer producer = producerService.getProducerByUsername(username);
+        Product newProduct = request.toProduct(producer);
         productService.saveProduct(newProduct);
         return ResponseEntity.ok(new MessageResponse("Producto guardado correctamente"));
     }
 
-    public ResponseEntity<MessageResponse> updateProduct(HttpServletRequest http, UpdateProductRequest request) {
-        Producer producer = producerService.getProducerByUsername(jwtService.extractUsername(http));
-        Product product = productService.getProductById(request.getId());
+    public ResponseEntity<MessageResponse> updateProduct(
+            Long productId,
+            UpdateProductRequest request,
+            HttpServletRequest http
+    ) {
+        String username = jwtService.extractUsername(http);
+        Producer producer = producerService.getProducerByUsername(username);
+        Product product = productService.getProductById(productId);
         if (!isOwner(product, producer)) {
             return ResponseEntity.badRequest().body(new MessageResponse("El productor no es el propietario del producto"));
         }
-        serializerService.updateSetup(request, product);
+        product.update(request);
         productService.saveProduct(product);
         return ResponseEntity.ok(new MessageResponse("Producto actualizado correctamente"));
+    }
+
+    public ResponseEntity<MessageResponse> deleteProduct(
+            Long productId,
+            HttpServletRequest http
+    ) {
+        String username = jwtService.extractUsername(http);
+        Producer producer = producerService.getProducerByUsername(username);
+        Product product = productService.getProductById(productId);
+        if (!isOwner(product, producer)) {
+            return ResponseEntity.badRequest().body(new MessageResponse("El productor no es el propietario del producto"));
+        }
+        productService.deleteProduct(productId);
+        return ResponseEntity.ok(new MessageResponse("Producto eliminado correctamente"));
     }
 
     private boolean isOwner(Product product, Producer producer) {

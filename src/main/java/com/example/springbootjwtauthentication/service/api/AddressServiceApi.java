@@ -4,17 +4,21 @@ import com.example.springbootjwtauthentication.model.Address;
 import com.example.springbootjwtauthentication.model.City;
 import com.example.springbootjwtauthentication.model.User;
 import com.example.springbootjwtauthentication.payload.request.AddAddressRequest;
+import com.example.springbootjwtauthentication.payload.request.UpdateAddressRequest;
+import com.example.springbootjwtauthentication.payload.response.AddressResponse;
 import com.example.springbootjwtauthentication.payload.response.MessageResponse;
-import com.example.springbootjwtauthentication.repository.AddressRepository;
-import com.example.springbootjwtauthentication.repository.UserRepository;
-import com.example.springbootjwtauthentication.security.jwt.JwtUtils;
-import com.example.springbootjwtauthentication.service.implementations.*;
+import com.example.springbootjwtauthentication.service.implementations.AddressService;
+import com.example.springbootjwtauthentication.service.implementations.CityService;
+import com.example.springbootjwtauthentication.service.implementations.JWTService;
+import com.example.springbootjwtauthentication.service.implementations.UserService;
 import com.example.springbootjwtauthentication.service.serializer.AddressSerializerService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AddressServiceApi {
@@ -28,6 +32,18 @@ public class AddressServiceApi {
     private AddressService addressService;
     @Autowired
     private CityService cityService;
+
+    public ResponseEntity<List<AddressResponse>> getAllAddress(Long userId, HttpServletRequest httpServletRequest) {
+        List<AddressResponse> addressResponseList = new ArrayList<>();
+
+        addressService.getAllAddressByUserId(userId).forEach(
+                address -> {
+                    addressResponseList.add(address.toAddressResponse());
+                }
+        );
+
+        return ResponseEntity.ok(addressResponseList);
+    }
 
     public ResponseEntity<MessageResponse> addAddress(HttpServletRequest http, AddAddressRequest request) {
         User user = userService.getUserByUsername(jwtService.extractUsername(http));
@@ -62,5 +78,39 @@ public class AddressServiceApi {
             userService.saveUser(user);
         }
         return ResponseEntity.ok(new MessageResponse("Nueva dirección agregada correctamente"));
+    }
+
+    public ResponseEntity<MessageResponse> updateAddress(Long userId, Long addressId, UpdateAddressRequest request, HttpServletRequest http) {
+        Address address = addressService.getAddressById(addressId);
+
+        address.update(request);
+
+        User user = userService.getUserById(userId);
+        if (request.getIsCurrentAddress()) {
+            user.setCurrentAddress(address);
+            userService.saveUser(user);
+        }
+        if (user.getCurrentAddress() != null) {
+            if (user.getCurrentAddress().getId().equals(addressId) && !request.getIsCurrentAddress()) {
+                user.setCurrentAddress(null);
+                userService.saveUser(user);
+            }
+        }
+
+        addressService.saveAddress(address);
+
+        return ResponseEntity.ok(new MessageResponse("Dirección actualizada correctamente"));
+    }
+
+    public ResponseEntity<MessageResponse> deleteAddress(Long userId, Long id, HttpServletRequest http) {
+        User user = userService.getUserById(userId);
+        if (user.getCurrentAddress() != null) {
+            if (user.getCurrentAddress().getId().equals(id)) {
+                user.setCurrentAddress(null);
+                userService.saveUser(user);
+            }
+        }
+        addressService.deleteById(id);
+        return ResponseEntity.ok(new MessageResponse("Dirección borrada correctamente"));
     }
 }

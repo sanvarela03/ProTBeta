@@ -1,6 +1,7 @@
 package com.example.springbootjwtauthentication.model;
 
 import com.example.springbootjwtauthentication.model.PK.OrderProductPK;
+import com.example.springbootjwtauthentication.payload.response.ProductResponse;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -39,5 +40,16 @@ public class OrderProduct implements Serializable {
         this.order = order;
         this.product = product;
         this.units = units;
+    }
+
+    public ProductResponse toProductResponse() {
+        return ProductResponse.builder()
+                .productId(this.getProduct().getId())
+                .name(this.getProduct().getName())
+                .description(this.getProduct().getDescription())
+                .units(this.getUnits())
+                .price(this.getProduct().getPrice())
+                .orderId(this.getOrder().getId())
+                .build();
     }
 }

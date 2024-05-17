@@ -22,6 +22,11 @@ public class ProducerService {
         return repository.findAll();
     }
 
+    public List<Producer> getProducersByCity(String city) {
+
+        return repository.findAllByCity(city).orElseThrow(() -> new RuntimeException("No se encontró productures en Producer Service con ciudad : " + city));
+    }
+
     public Producer getProducerById(Long producerId) {
         return repository.findById(producerId)
                 .orElseThrow(() -> new RuntimeException("No se encontró el productor con ID: " + producerId));

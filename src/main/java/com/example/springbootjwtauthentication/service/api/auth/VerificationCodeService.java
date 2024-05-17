@@ -1,5 +1,6 @@
 package com.example.springbootjwtauthentication.service.api.auth;
 
+import com.example.springbootjwtauthentication.model.Order;
 import com.example.springbootjwtauthentication.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +27,17 @@ public class VerificationCodeService {
     }
 
     public String generateVerificationCode() {
+        Random random = new Random();
+        int code = 100_000 + random.nextInt(900_000);
+
+        return String.valueOf(code);
+    }
+
+    public boolean verificationCodeMatches(Order order, String verificationCode) {
+        return encoder.matches(verificationCode, order.getDeliveryVerificationCode());
+    }
+
+    public String generateDeliveryVerificationCode() {
         Random random = new Random();
 
         int code = 100_000 + random.nextInt(900_000);

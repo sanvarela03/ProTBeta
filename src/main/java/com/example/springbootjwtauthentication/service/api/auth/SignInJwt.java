@@ -2,6 +2,7 @@ package com.example.springbootjwtauthentication.service.api.auth;
 
 import com.example.springbootjwtauthentication.model.User;
 import com.example.springbootjwtauthentication.repository.UserRepository;
+import com.example.springbootjwtauthentication.service.implementations.UserService;
 import com.example.springbootjwtauthentication.service.interfaces.SignIn;
 import com.example.springbootjwtauthentication.model.RefreshToken;
 import com.example.springbootjwtauthentication.payload.request.LoginRequest;
@@ -33,7 +34,7 @@ public class SignInJwt implements SignIn {
     @Autowired
     private RefreshTokenService refreshTokenService;
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Override
     public ResponseEntity<JwtResponse> doSignIn(LoginRequest request) {
@@ -48,7 +49,7 @@ public class SignInJwt implements SignIn {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new RuntimeException("User not found in SignInJwt, Id" + userDetails.getId()));
+        User user = userService.getUserById(userDetails.getId());
 
 
         log.info("refresh check: ");
@@ -68,17 +69,27 @@ public class SignInJwt implements SignIn {
 
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
 
+        JwtResponse jwtResponse = new JwtResponse();
+        jwtResponse.setToken(jwt);
+        jwtResponse.setType("Bearer");
+        jwtResponse.setRefreshToken(refreshToken.getToken());
+        jwtResponse.setId(userDetails.getId());
+        jwtResponse.setUsername(userDetails.getUsername());
+        jwtResponse.setEmail(userDetails.getEmail());
+        jwtResponse.setRoles(roles);
 
-        return ResponseEntity.ok(
-                JwtResponse.builder()
-                        .token(jwt)
-                        .type("Bearer")
-                        .refreshToken(refreshToken.getToken())
-                        .id(userDetails.getId())
-                        .username(userDetails.getUsername())
-                        .email(userDetails.getEmail())
-                        .roles(roles)
-                        .build()
-        );
+
+//        return ResponseEntity.ok(
+//                JwtResponse.builder()
+//                        .token(jwt)
+//                        .type("Bearer")
+//                        .refreshToken(refreshToken.getToken())
+//                        .id(userDetails.getId())
+//                        .username(userDetails.getUsername())
+//                        .email(userDetails.getEmail())
+//                        .roles(roles)
+//                        .build()
+//        );
+        return ResponseEntity.ok(jwtResponse);
     }
 }

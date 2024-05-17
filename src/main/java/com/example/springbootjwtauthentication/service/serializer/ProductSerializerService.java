@@ -28,7 +28,7 @@ public class ProductSerializerService {
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
         product.setUnitsAvailable(request.getUnitsAvailable());
-        product.setWeight(request.getWeightPerUnit());
+        product.setWeight(request.getWeight());
         product.setAvailable(request.isAvailable());
     }
 }

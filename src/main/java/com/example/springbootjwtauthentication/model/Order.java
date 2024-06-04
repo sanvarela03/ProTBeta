@@ -69,9 +69,9 @@ public class Order implements Serializable {
 
     private double orderVolume;
 
-    private double estimatedTravelDistance;
+    private Double estimatedTravelDistance;
 
-    private double estimatedTravelDuration;
+    private Double estimatedTravelDuration;
 
     private double shippingCost;
 

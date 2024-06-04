@@ -18,6 +18,7 @@ public class TransporterInfoResponse {
     private String email;
     private Long currentAddressId;
     private Long currentVehicleId;
+    private Boolean available;
     private List<AddressResponse> addressList;
     private List<VehicleResponse> vehicleList;
     private List<OrderInfoResponse> orderInfoResponseList;

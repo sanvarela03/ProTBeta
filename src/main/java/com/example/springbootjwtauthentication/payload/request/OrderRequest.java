@@ -18,8 +18,8 @@ public class OrderRequest {
     private Long producerId;
     private Long deliveryAddressId;
     private String paymentMethod;
-    private double estimatedDistance;
-    private double estimatedTime;
+    private Double estimatedDistance;
+    private Double estimatedTime;
     private Long chosenTransporterId;
 
     @NotBlank

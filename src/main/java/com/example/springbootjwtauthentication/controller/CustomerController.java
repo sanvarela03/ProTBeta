@@ -58,7 +58,7 @@ public class CustomerController {
             @PathVariable Long customerId,
             @RequestParam String city
     ) {
-        return customerServiceApi.searchAllProducers();
+        return customerServiceApi.searchAllProducers(customerId, city);
     }
 
     @GetMapping("/{customerId}/search-producers/{producerId}")

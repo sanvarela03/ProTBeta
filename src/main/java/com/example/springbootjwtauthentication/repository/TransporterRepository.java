@@ -17,6 +17,9 @@ public interface TransporterRepository extends JpaRepository<Transporter, Long> 
     )
     Optional<List<Transporter>> findAllByCityId(Long id);
 
+    @Query("SELECT t FROM Transporter t WHERE t.isAvailable = true")
+    Optional<List<Transporter>> findAllAvailable();
+
     @Query(
             value = "SELECT AVG(t.currentVehicle.fuelConsumption) FROM Transporter t WHERE t.currentAddress.city.id = ?1 AND t.isAvailable = true"
     )

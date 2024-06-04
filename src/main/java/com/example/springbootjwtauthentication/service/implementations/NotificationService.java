@@ -35,30 +35,37 @@ public class NotificationService {
     /**
      * Notifica al transportador que un nuevo pedido esta buscando transportador
      */
-    @Async
     public void notifyTransporter(Order order, Transporter transporter) throws FirebaseMessagingException {
 
-        log.info("SIMULACIÓN DE NOTIFICACIÓN CON FIREBASE ...");
+        log.info("Notificación con  Firebase ...");
+        log.info("Pedido : {}", order.getId());
+        log.info("Transportador : {}", transporter.toString());
 
-//        Notification notification = Notification.builder()
-//                .setTitle("Solicitud de  transporte de pedido")
-//                .setBody(order.getCustomer().getName() + " ha realizado un pedido")
-//                .build();
-//
-//        Message msg = Message.builder()
-//                .setToken(transporter.getFirebaseToken())
-//                .setNotification(notification)
-//                .setAndroidConfig(AndroidConfig.builder()
-//                        .setNotification(AndroidNotification.builder()
-//                                .setSound("default")
-//                                .setClickAction("YOUR_CLICK_ACTION")
-//                                .setDefaultLightSettings(true)
-//                                .setColor("#fca103")
-//                                .setBodyLocalizationKey("")
-//                                .build())
-//                        .build())
-//                .build();
-//        firebaseMessaging.send(msg);
+
+        Notification notification = Notification.builder()
+                .setTitle("Solicitud de  transporte de pedido")
+                .setBody(order.getCustomer().getName() + " ha realizado un pedido")
+                .build();
+
+        Message msg = Message.builder()
+                .setToken(transporter.getFirebaseToken())
+                .setNotification(notification)
+                .putData("orderId", order.getId().toString())
+                .putData("customer", order.getCustomer().toString())
+                .putData("producer", order.getProducer().toString())
+                .putData("Weight", Double.toString(order.getOrderWeight()))
+                .putData("Cost", Double.toString(order.getOrderCost()))
+                .setAndroidConfig(AndroidConfig.builder()
+                        .setNotification(AndroidNotification.builder()
+                                .setSound("default")
+                                .setClickAction("YOUR_CLICK_ACTION")
+                                .setDefaultLightSettings(true)
+                                .setColor("#fca103")
+                                .setBodyLocalizationKey("")
+                                .build())
+                        .build())
+                .build();
+        firebaseMessaging.send(msg);
     }
 
     /**
@@ -70,7 +77,7 @@ public class NotificationService {
         Producer producer = order.getProducer();
 
         String msgTittle = "Nueva solicitud de pedido";
-        String msgBody = "Hola " + producer.getName() + ", " + customer.getName()+ " " + customer.getLastName() + " ha realizado un pedido, revisa los detalles del pedido y responde la solicitud.";
+        String msgBody = "Hola " + producer.getName() + ", " + customer.getName() + " " + customer.getLastName() + " ha realizado un pedido, revisa los detalles del pedido y responde la solicitud.";
 
 
         log.info("SIMULACIÓN DE NOTIFICACIÓN CON FIREBASE ({}) ...", Thread.currentThread().getName());

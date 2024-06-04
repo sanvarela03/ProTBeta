@@ -54,12 +54,16 @@ public class OrderServiceApi {
     private UserService userService;
 
     public ResponseEntity<?> addNewOrder(HttpServletRequest http, OrderRequest request) throws FirebaseMessagingException, InterruptedException, ExecutionException {
+        log.info("OrderRequest : {}", request);
         Producer producer = getProducer(request);
         Customer customer = getCustomer(http);
         Address from = getFrom(producer);
         Address to = getTo(request);
 
         Order order = new Order(customer, producer, from, to);
+
+        order.setEstimatedTravelDistance(request.getEstimatedDistance());
+        order.setEstimatedTravelDuration(request.getEstimatedTime());
         order.setChosenTransporterId(request.getChosenTransporterId());
         orderService.saveOrder(order); // Importante guardarlo acá para que no hayan duplicados, ya que al guardarlo se genera la llave primaria
 
@@ -82,6 +86,7 @@ public class OrderServiceApi {
         order.setOrderCost(totalPrice);
         order.setOrderWeight(totalWeight);
         order.setOrderVolume(totalVolume);
+
 
         List<OrderProduct> orderProductList = orderProductService.saveAllOrderProducts(orderProductSet);
 

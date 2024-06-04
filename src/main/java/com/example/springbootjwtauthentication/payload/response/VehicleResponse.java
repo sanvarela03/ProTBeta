@@ -15,6 +15,7 @@ public class VehicleResponse {
     private String model;
     private String year;
     private String vin;
+    private String plate;
     private String fuelType;
     private double fuelConsumption;
     private String fuelConsumptionUnit;

@@ -38,6 +38,7 @@ public class UserController {
             @PathVariable Long userId,
             @RequestBody UserInfoRequest request
     ) {
+        log.info("UserInfoRequest : {}", request);
         return userServiceApi.updateUserAccount(userId, request);
     }
 

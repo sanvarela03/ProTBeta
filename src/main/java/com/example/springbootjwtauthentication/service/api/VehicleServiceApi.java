@@ -30,7 +30,7 @@ public class VehicleServiceApi {
 
     public ResponseEntity<MessageResponse> addVehicle(AddVehicleRequest request, HttpServletRequest http) {
         Transporter transporter = transporterService.getByUsername(jwtService.extractUsername(http));
-        Vehicle vehicle = getVehicle(request, transporter);
+        Vehicle vehicle = request.getVehicle(transporter);
 
         vehicleService.addVehicle(vehicle);
 
@@ -76,19 +76,19 @@ public class VehicleServiceApi {
         return ResponseEntity.ok(vehicleResponseList);
     }
 
-    private static Vehicle getVehicle(AddVehicleRequest request, Transporter transporter) {
-        Vehicle vehicle = new Vehicle();
-
-        vehicle.setBrand(request.getBrand());
-        vehicle.setModel(request.getModel());
-        vehicle.setYear(request.getYear());
-        vehicle.setVin(request.getVin());
-        vehicle.setFuelType(request.getFuelType());
-        vehicle.setFuelConsumption(request.getFuelConsumption());
-        vehicle.setFuelConsumptionUnit(request.getFuelConsumptionUnit());
-        vehicle.setCargoVolume(request.getCargoVolume());
-        vehicle.setPayload(request.getPayload());
-        vehicle.setTransporter(transporter);
-        return vehicle;
-    }
+//    private static Vehicle getVehicle(AddVehicleRequest request, Transporter transporter) {
+//        Vehicle vehicle = new Vehicle();
+//
+//        vehicle.setBrand(request.getBrand());
+//        vehicle.setModel(request.getModel());
+//        vehicle.setYear(request.getYear());
+//        vehicle.setVin(request.getVin());
+//        vehicle.setFuelType(request.getFuelType());
+//        vehicle.setFuelConsumption(request.getFuelConsumption());
+//        vehicle.setFuelConsumptionUnit(request.getFuelConsumptionUnit());
+//        vehicle.setCargoVolume(request.getCargoVolume());
+//        vehicle.setPayload(request.getPayload());
+//        vehicle.setTransporter(transporter);
+//        return vehicle;
+//    }
 }

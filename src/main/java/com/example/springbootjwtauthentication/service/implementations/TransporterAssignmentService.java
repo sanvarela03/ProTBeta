@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -53,6 +54,7 @@ public class TransporterAssignmentService implements TransporterAnswerListener {
      * @param candidateTransportersList La lista de candidatos ponderada a la cuál se le enviaran notificaciones
      * @param order                     El pedido al cuál se le está buscando el transportador
      */
+    @Override
     public void startJob(TransporterAssignmentManager manager, List<Transporter> candidateTransportersList, Order order) throws FirebaseMessagingException {
         log.info(" TransporterAssignmentService | candidateTransportersList: {}", candidateTransportersList);
 
@@ -144,7 +146,7 @@ public class TransporterAssignmentService implements TransporterAnswerListener {
      * a continuación se establece la variable de instancia booleada en true la cual indica si el transportador ignoró o no la notificación en el tiempo establecido
      * por último se inicia el temporizador
      */
-    private void notifyNextTransporter() throws FirebaseMessagingException {
+    protected void notifyNextTransporter() throws FirebaseMessagingException {
         if (!candidateTransportersList.isEmpty()) {
             Transporter nextTransporter = candidateTransportersList.get(0);
 

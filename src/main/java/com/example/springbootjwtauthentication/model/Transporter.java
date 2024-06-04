@@ -41,6 +41,7 @@ public class Transporter extends User {
         transporterInfoResponse.setName(this.getName());
         transporterInfoResponse.setLastname(this.getLastName());
         transporterInfoResponse.setEmail(this.getEmail());
+        transporterInfoResponse.setAvailable(this.isAvailable());
 
         if (this.getCurrentAddress() != null) {
             transporterInfoResponse.setCurrentAddressId(this.getCurrentAddress().getId());

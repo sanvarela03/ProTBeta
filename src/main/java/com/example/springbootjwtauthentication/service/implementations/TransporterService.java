@@ -32,11 +32,12 @@ public class TransporterService {
     }
 
 
-
-
-
     public List<Transporter> getAllTransporters() {
         return repository.findAll();
+    }
+
+    public List<Transporter> getAllAvailableTransporters() {
+        return repository.findAllAvailable().orElseThrow(() -> new RuntimeException("No se encontró la lista de transportadores disponibles"));
     }
 
     public List<Transporter> getAllTransportersByCityId(Long id) {

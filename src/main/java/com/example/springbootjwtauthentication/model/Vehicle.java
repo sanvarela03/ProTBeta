@@ -31,6 +31,9 @@ public class Vehicle implements Serializable {
     private String model;
     private String year;
     private String vin;
+    private String plate;
+
+
     private String fuelType;
     private double fuelConsumption;
     private String fuelConsumptionUnit; // L/100Km
@@ -54,6 +57,7 @@ public class Vehicle implements Serializable {
                 .model(this.getModel())
                 .year(this.getYear())
                 .vin(this.getVin())
+                .plate(this.getPlate())
                 .fuelType(this.getFuelType())
                 .fuelConsumption(this.getFuelConsumption())
                 .fuelConsumptionUnit(this.getFuelConsumptionUnit())

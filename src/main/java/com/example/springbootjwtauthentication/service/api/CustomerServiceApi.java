@@ -39,6 +39,9 @@ public class CustomerServiceApi {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private BingMapsService bingMapsService;
+
     public ResponseEntity<ProducerDetailResponse> searchProducer(Long id) {
         Producer producer = producerService.getProducerById(id);
 
@@ -55,10 +58,11 @@ public class CustomerServiceApi {
         return null;
     }
 
-    public ResponseEntity<List<ProducerSearchResponse>> searchAllProducers() {
+    public ResponseEntity<List<ProducerSearchResponse>> searchAllProducers(Long customerId, String city) {
+        Customer customer = customerService.getCustomerById(customerId);
 
         List<Producer> producerList = producerService.getAllProducers();
-        List<ProducerSearchResponse> producerSearchResponseList = getProducerSearchResponseList(producerList);
+        List<ProducerSearchResponse> producerSearchResponseList = getProducerSearchResponseList(customer, producerList);
 
         return ResponseEntity.ok(producerSearchResponseList);
     }
@@ -83,17 +87,24 @@ public class CustomerServiceApi {
         return ResponseEntity.ok().body(customerInfoResponse);
     }
 
-    private List<ProducerSearchResponse> getProducerSearchResponseList(List<Producer> producerList) {
+    private List<ProducerSearchResponse> getProducerSearchResponseList(Customer customer, List<Producer> producerList) {
         List<ProducerSearchResponse> producerSearchResponseList = new ArrayList<>();
 
-        producerList.forEach(producer -> {
-            if (producer.getCurrentAddress() != null) {
-                producerSearchResponseList.add(
-                        producer.toProducerSearchResponse()
-                );
-            }
+        producerList.forEach(
+                producer -> {
+                    if (producer.getCurrentAddress() != null) {
+                        producerSearchResponseList.add(
+                                producer.toProducerSearchResponse()
+                        );
+                    }
 
-        });
+                });
+
+        producerSearchResponseList.forEach(
+                p -> {
+                    p.setResource(bingMapsService.calcularDistancia(p.getCurrentAddress().getLatitude(), p.getCurrentAddress().getLongitude(), customer.getCurrentAddress().getLatitude(), customer.getCurrentAddress().getLongitude()));
+                }
+        );
         return producerSearchResponseList;
     }
 

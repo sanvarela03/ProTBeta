@@ -85,4 +85,8 @@ public class Address implements Serializable {
         );
         return addressResponseList;
     }
+
+    public String getAddressResume() {
+        return this.getStreet() + ", " + this.getCity().getName() + ", " + this.getLatitude() + ", " + this.getLongitude();
+    }
 }

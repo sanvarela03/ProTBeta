@@ -143,6 +143,11 @@ public class User implements Serializable {
         this.setPhone(request.getPhone());
     }
 
+
+    public String getCompleteName() {
+        return this.getName() + " " + this.getLastName();
+    }
+
     public void updateFirebaseToken(UpdateFirebaseTokenRequest request) {
         this.setFirebaseToken(request.getFirebaseToken());
     }

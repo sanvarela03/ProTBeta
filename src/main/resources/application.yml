@@ -6,24 +6,22 @@ spring:
     restart:
       enabled: false
   datasource:
-    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://DESKTOP-7CFDUUP\SQLEXPRESS;databaseName=jwt_test;encrypt=true;trustServerCertificate=true
-    username: sa
-    password: 12345678
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://dpg-cpg138v79t8c73ebhpc0-a.oregon-postgres.render.com/database_q1xd
+    username: database_q1xd_user
+    password: 6TwuKpN8nhDP5vXsDWMUjz2ksojz0szc
   jpa:
     hibernate:
-#      ddl-auto: create-drop
-#      ddl-auto: create-drop
-      ddl-auto: update
+      ddl-auto: create-drop
+    #      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
-    database: sql_server
-    database-platform: org.hibernate.dialect.SQLServer2012Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
   sql:
     init:
-      platform: mssql
+      platform: postgres
   mail:
     host: smtp.gmail.com
     port: 587
@@ -61,9 +59,9 @@ bing:
   maps:
     apikey: AltqUH2HBpugYCVAkuvz-jM6YAdBdiTmDBr0mcLx9QTU6Bt6TozzweZT7oBQMC2I
 
-
 # swagger-ui custom path
 springdoc.swagger-ui.path: /swagger-ui.html
+
 
 
 

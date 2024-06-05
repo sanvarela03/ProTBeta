@@ -7,7 +7,7 @@ spring:
       enabled: false
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://dpg-cpg138v79t8c73ebhpc0-a.oregon-postgres.render.com/database_q1xd
+    url: jdbc:postgresql://dpg-cpg138v79t8c73ebhpc0-a/database_q1xd
     username: database_q1xd_user
     password: 6TwuKpN8nhDP5vXsDWMUjz2ksojz0szc
   jpa:

@@ -187,10 +187,4 @@ public class TransporterAssignmentService implements TransporterAnswerListener {
         }
     }
 }
-/*
- * TODO:
- *  1 Necesito probar esta funcionalidad si o si-> PRUEBAS UNITARIAS
- *  2 Necesito decidir en dónde se invocará al método startJob rta -> cuando el productor acepta del pedido
- *  3 Una vez decidido en dónde se invocará al método necesito decidir cómo se deben crear los objetos ->
- *  4 Posiblemente el gestor de asignación deba ser un singleton
- * */
+
